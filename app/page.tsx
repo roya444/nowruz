@@ -1,101 +1,93 @@
-import Image from "next/image";
+"use client";
+
+import Link from "next/link";
+import NavBar from "@/components/NavBar";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <main className="relative w-full h-screen overflow-hidden">
+      {/* Background image */}
+      <img
+        src="/flowers-bg.jpg"
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover object-top"
+      />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Gradient overlays */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `
+            radial-gradient(ellipse at -6% 41%, rgba(24,49,32,0.6) 0%, transparent 50%),
+            radial-gradient(ellipse at 105% 110%, rgba(147,75,58,0.6) 0%, transparent 50%)
+          `,
+        }}
+      />
+
+      {/* Diamond vignette overlay */}
+      <div
+        className="absolute inset-0 mix-blend-overlay"
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 54%, rgba(0,0,0,0.56) 0%, rgba(51,51,51,0.28) 30%, transparent 70%)",
+        }}
+      />
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col h-full">
+        <NavBar variant="light" />
+
+        {/* Center content */}
+        <div className="flex-1 flex flex-col items-center justify-center mt-12 sm:mt-16 md:mt-24 gap-4 sm:gap-6 md:gap-11 px-4 sm:px-8 md:px-[110px]">
+          <h1 className="font-[family-name:var(--font-soiglat)] text-[80px] sm:text-[140px] md:text-[200px] lg:text-[300px] leading-[0.85] text-white">
+            Nowruz
+          </h1>
+          <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 font-[family-name:var(--font-space-mono)] text-[14px] sm:text-[20px] md:text-[32px] text-white text-center">
+            <span className="font-[family-name:var(--font-noto-arabic)]">
+              نوروز
+            </span>
+            <span>•</span>
+            <span>/no-ROOZ/</span>
+            <span>•</span>
+            <span>meaning &ldquo;New Day&rdquo;</span>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+
+        {/* Bottom section with gradient backdrop */}
+        <div
+          className="relative pt-24 sm:pt-32 md:pt-40"
+          style={{
+            background:
+              "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.45) 40%, rgba(0,0,0,0.6) 100%)",
+          }}
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          <div className="flex flex-col md:flex-row items-center md:items-center gap-6 md:gap-[100px] pb-10 sm:pb-14 md:pb-[60px] px-4 md:px-[100px] justify-center">
+            <p className="font-[family-name:var(--font-space-mono)] text-[13px] sm:text-[16px] md:text-[20px] text-white leading-[28px] text-center md:text-justify max-w-[650px]">
+              Celebrate this ancient holiday by building your own digital{" "}
+              <strong>
+                Haftsin{" "}
+                <span className="font-[family-name:var(--font-noto-arabic)]">
+                  هفت سین
+                </span>{" "}
+                /haft-SEEN/
+              </strong>{" "}
+              — a traditional spread of symbolic items, each
+              representing a hope for the new year.
+            </p>
+            <Link
+              href="/build"
+              className="flex items-center gap-16 px-10 py-4 bg-[#1B6B54] text-white rounded-lg shadow-[0px_4px_4px_rgba(0,0,0,0.25)] shrink-0 hover:bg-[#237a62] transition-colors"
+            >
+              <span className="font-[family-name:var(--font-space-mono)] font-bold text-[14px] sm:text-[18px] md:text-[24px] tracking-[0.08em] whitespace-nowrap">
+                BERiM, LET&apos;S GO!
+              </span>
+              <span className="text-[22px] sm:text-[26px] md:text-[32px]">
+                →
+              </span>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }

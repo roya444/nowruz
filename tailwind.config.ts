@@ -11,6 +11,12 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        spring: "#4CAF50",
+        gold: "#FFD700",
+        saffron: "#FF9800",
+        rose: "#E91E63",
+        sky: "#03A9F4",
+        charcoal: "#333333",
       },
     },
   },
