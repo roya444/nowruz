@@ -9,9 +9,9 @@ export const sofrehItems: SofrehItem[] = [
     symbolism: "Rebirth and renewal of nature",
     isCore: true,
     variants: [
-      { id: "sabzeh-wheat", label: "Wheat", color: "#66BB6A", emoji: "🌱" },
+      { id: "sabzeh-wheat", label: "Wheatgrass", color: "#66BB6A", emoji: "🌱" },
       { id: "sabzeh-lentil", label: "Lentil", color: "#43A047", emoji: "🌿" },
-      { id: "sabzeh-barley", label: "Barley", color: "#81C784", emoji: "☘️" },
+      { id: "sabzeh-mungbean", label: "Mung Bean", color: "#81C784", emoji: "☘️" },
     ],
   },
   {
@@ -50,7 +50,6 @@ export const sofrehItems: SofrehItem[] = [
     variants: [
       { id: "sir-white", label: "White", color: "#F5F5F5", emoji: "🧄" },
       { id: "sir-purple", label: "Purple", color: "#CE93D8", emoji: "🧄" },
-      { id: "sir-roasted", label: "Roasted", color: "#FFCC80", emoji: "🧄" },
     ],
   },
   {
@@ -102,7 +101,6 @@ export const sofrehItems: SofrehItem[] = [
     variants: [
       { id: "sonbol-purple", label: "Purple", color: "#9C27B0", emoji: "🪻" },
       { id: "sonbol-pink", label: "Pink", color: "#E91E63", emoji: "🌸" },
-      { id: "sonbol-white", label: "White", color: "#FAFAFA", emoji: "🤍" },
       { id: "sonbol-yellow", label: "Yellow", color: "#FDD835", emoji: "💛" },
     ],
   },
@@ -116,7 +114,7 @@ export const sofrehItems: SofrehItem[] = [
     variants: [
       { id: "sekkeh-gold", label: "Gold", color: "#FFD700", emoji: "🪙" },
       { id: "sekkeh-silver", label: "Silver", color: "#B0BEC5", emoji: "🥈" },
-      { id: "sekkeh-stack", label: "Stack", color: "#FFC107", emoji: "💰" },
+      { id: "sekkeh-mixed", label: "Mixed", color: "#FFC107", emoji: "💰" },
     ],
   },
   {
@@ -142,7 +140,20 @@ export const sofrehItems: SofrehItem[] = [
     variants: [
       { id: "goldfish-orange", label: "Orange", color: "#FF7043", emoji: "🐟" },
       { id: "goldfish-red", label: "Red", color: "#E53935", emoji: "🐠" },
-      { id: "goldfish-gold", label: "Golden", color: "#FFD600", emoji: "🐡" },
+      { id: "goldfish-yellow", label: "Yellow", color: "#FFD600", emoji: "🐡" },
+    ],
+  },
+  {
+    id: "tokhmeh",
+    englishName: "Painted Eggs",
+    phoneticName: "Tokhmeh Morgh",
+    farsiName: "تخم مرغ رنگی",
+    symbolism: "Fertility and new life",
+    isCore: false,
+    variants: [
+      { id: "tokhmeh-red", label: "Red", color: "#EF5350", emoji: "🥚" },
+      { id: "tokhmeh-blue", label: "Blue", color: "#42A5F5", emoji: "🥚" },
+      { id: "tokhmeh-green", label: "Green", color: "#66BB6A", emoji: "🥚" },
     ],
   },
   {

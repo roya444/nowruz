@@ -55,7 +55,7 @@ export default function BuildPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#1B6B54] relative overflow-hidden">
+    <main className="h-screen bg-[#0F4637] relative overflow-hidden">
       {/* Gradient overlay — darkens toward bottom */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -82,15 +82,15 @@ export default function BuildPage() {
         <rect width="100%" height="100%" filter="url(#noise)" />
       </svg>
 
-      <div className="relative z-10">
+      <div className="relative z-10 flex flex-col h-full">
         {/* Nav bar */}
         <NavBar variant="dark" />
 
         {/* Two-panel layout */}
-        <div className="pt-6 md:pt-10 px-4 md:px-[64px]">
-          <div className="flex flex-col lg:flex-row gap-6 md:gap-8 items-start">
+        <div className="pt-6 md:pt-10 px-4 md:px-[64px] flex-1 min-h-0">
+          <div className="flex flex-col lg:flex-row gap-6 md:gap-8 items-start h-full">
             {/* Left: Accordion list */}
-            <div className="w-full lg:w-[40%]">
+            <div className="w-full lg:w-[40%] overflow-y-auto h-full">
               <AccordionItemList
                 items={sofrehItems}
                 selections={selections}
@@ -101,7 +101,7 @@ export default function BuildPage() {
             </div>
 
             {/* Right: Live preview */}
-            <div className="w-full lg:flex-1">
+            <div className="w-full lg:flex-1 lg:self-start">
               <SofrehPreview selections={selections} />
 
               {/* View button */}
@@ -113,7 +113,7 @@ export default function BuildPage() {
                 >
                   <button
                     onClick={handleViewSofreh}
-                    className="flex items-center gap-10 mx-auto px-10 py-4 bg-[#FFFBF0] text-[#1B6B54] rounded-[24px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#FFF8E8] transition-colors"
+                    className="flex items-center gap-10 mx-auto px-10 py-4 bg-[#FFFBF0] text-[#0F4637] rounded-[24px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#FFF8E8] transition-colors"
                   >
                     <span className="font-[family-name:var(--font-space-mono)] font-bold text-[14px] sm:text-[18px] md:text-[24px] tracking-[0.08em] whitespace-nowrap">
                       ViEW MY HAFTSiN

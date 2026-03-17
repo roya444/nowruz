@@ -6,10 +6,10 @@ interface NavBarProps {
 
 export default function NavBar({ variant }: NavBarProps) {
   const isLight = variant === "light";
-  const lineColor = isLight ? "bg-white" : "bg-[rgba(255,255,255,0.7)]";
-  const dotColor = isLight ? "bg-white" : "bg-[rgba(255,255,255,0.7)]";
-  const textColor = isLight ? "text-white" : "text-[rgba(255,255,255,0.7)]";
-  const logoOpacity = isLight ? "" : "opacity-70";
+  const lineColor = "bg-white";
+  const dotColor = "bg-white";
+  const textColor = "text-white";
+  const logoOpacity = "";
 
   return (
     <div className="flex items-center gap-3 md:gap-7 px-4 md:px-[70px] pt-4 md:pt-5">
