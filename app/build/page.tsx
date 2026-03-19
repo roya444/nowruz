@@ -171,7 +171,7 @@ export default function BuildPage() {
           </div>
 
           {/* Category carousel */}
-          <div className="px-4 pt-6 pb-4">
+          <div className="px-4 pt-6 pb-12">
             <MusicPlayer />
             {!allCoreSelected && (
               <div className="mb-3">
