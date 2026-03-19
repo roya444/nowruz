@@ -1,7 +1,7 @@
 "use client";
 
-import { toPng } from "html-to-image";
 import { RefObject, useCallback, useState } from "react";
+import { exportToPng } from "@/lib/exportHelper";
 
 interface DownloadButtonProps {
   targetRef: RefObject<HTMLDivElement | null>;
@@ -14,17 +14,25 @@ export default function DownloadButton({ targetRef }: DownloadButtonProps) {
     if (!targetRef.current) return;
     setLoading(true);
     try {
-      const dataUrl = await toPng(targetRef.current, {
-        cacheBust: true,
-        pixelRatio: 2,
-        backgroundColor: "#FFFBF0",
-      });
-      const link = document.createElement("a");
-      link.download = "my-haftsin.png";
-      link.href = dataUrl;
-      link.click();
+      const dataUrl = await exportToPng(targetRef.current);
+      const res = await fetch(dataUrl);
+      const blob = await res.blob();
+
+      // On mobile, use share API so user can "Save Image" to Photos
+      const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+      if (isMobile && typeof navigator.share === "function") {
+        const file = new File([blob], "my-haftsin.png", { type: "image/png" });
+        await navigator.share({ files: [file] });
+      } else {
+        const link = document.createElement("a");
+        link.download = "my-haftsin.png";
+        link.href = dataUrl;
+        link.click();
+      }
     } catch (err) {
-      console.error("Failed to export image:", err);
+      if ((err as DOMException)?.name !== "AbortError") {
+        console.error("Failed to export image:", err);
+      }
     } finally {
       setLoading(false);
     }

@@ -1,7 +1,7 @@
 "use client";
 
-import { toPng } from "html-to-image";
 import { RefObject, useCallback, useState, useEffect } from "react";
+import { exportToPng } from "@/lib/exportHelper";
 
 interface ShareButtonProps {
   targetRef: RefObject<HTMLDivElement | null>;
@@ -23,11 +23,7 @@ export default function ShareButton({ targetRef }: ShareButtonProps) {
     if (!targetRef.current) return;
     setLoading(true);
     try {
-      const dataUrl = await toPng(targetRef.current, {
-        cacheBust: true,
-        pixelRatio: 2,
-        backgroundColor: "#FFFBF0",
-      });
+      const dataUrl = await exportToPng(targetRef.current);
       const res = await fetch(dataUrl);
       const blob = await res.blob();
       const file = new File([blob], "my-haftsin.png", { type: "image/png" });

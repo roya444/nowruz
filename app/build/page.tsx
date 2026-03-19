@@ -33,6 +33,11 @@ export default function BuildPage() {
 
   const allCoreSelected = coreCount === 7;
 
+  const allVisibleSelected = useMemo(() => {
+    const selectedIds = new Set(selections.map((s) => s.itemId));
+    return visibleItems.every((item) => selectedIds.has(item.id));
+  }, [selections, visibleItems]);
+
   const coreItems = useMemo(
     () => sofrehItems.filter((i) => i.isCore),
     []
@@ -244,8 +249,8 @@ export default function BuildPage() {
               );
             })()}
 
-            {/* View button */}
-            {allCoreSelected && (
+            {/* View button — show after all carousel items selected */}
+            {allVisibleSelected && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

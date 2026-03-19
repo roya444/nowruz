@@ -70,16 +70,21 @@ export default function MusicProvider({ children }: { children: ReactNode }) {
   const togglePlay = useCallback(() => {
     if (!playerRef.current) {
       initPlayer();
+      // Don't set playing here — onReady will handle it
       return;
     }
-    if (playing) {
+    // Check actual player state instead of our state
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const state = playerRef.current.getPlayerState?.();
+    // YT.PlayerState.PLAYING === 1
+    if (state === 1) {
       playerRef.current.pauseVideo();
       setPlaying(false);
     } else {
       playerRef.current.playVideo();
       setPlaying(true);
     }
-  }, [playing, initPlayer]);
+  }, [initPlayer]);
 
   return (
     <MusicContext.Provider value={{ playing, title, togglePlay }}>
