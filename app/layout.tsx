@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Space_Mono, Noto_Sans_Arabic } from "next/font/google";
 import "./globals.css";
+import MusicProvider from "@/components/MusicProvider";
 
 const soiglat = localFont({
   src: "./fonts/Soiglat-Regular.ttf",
@@ -39,7 +40,7 @@ export default function RootLayout({
       <body
         className={`${soiglat.variable} ${spaceMono.variable} ${notoSansArabic.variable} antialiased`}
       >
-        {children}
+        <MusicProvider>{children}</MusicProvider>
       </body>
     </html>
   );

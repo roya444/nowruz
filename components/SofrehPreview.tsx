@@ -9,9 +9,9 @@ import { UserSelection } from "@/lib/types";
 const desktopFrames = [
   { id: 0, top: "4%", left: "5%", width: "18%", aspectRatio: "3/4" },     // 3:4 portrait, upper-left
   { id: 1, top: "4%", left: "26%", width: "16%", aspectRatio: "4/3" },    // 4:3 landscape, upper-left
-  { id: 2, top: "3%", left: "70%", width: "14%", aspectRatio: "3/4" },    // 3:4 portrait, upper-right
-  { id: 3, top: "8%", left: "87%", width: "10%", aspectRatio: "4/3" },    // 4:3 landscape, far right
-  { id: 4, top: "2%", left: "48%", width: "12%", aspectRatio: "3/4" },    // 3:4 portrait, top center
+  { id: 2, top: "5%", left: "60%", width: "14%", aspectRatio: "3/4" },    // 3:4 portrait
+  { id: 3, top: "8%", left: "77%", width: "15%", aspectRatio: "4/3" },    // 4:3 landscape, far right
+  { id: 4, top: "22%", left: "26%", width: "12%", aspectRatio: "3/4" },   // 3:4 portrait
 ];
 
 // Mobile frames use aspect-ratio CSS; height is auto.
@@ -130,13 +130,13 @@ const mobileOffset: Record<string, { top?: number; left?: number }> = {
   ayeneh:   { top: 25 },          // mirror
   goldfish: { top: 20 },          // fish
   sonbol:   { top: 23 },          // hyacinth — up 2%
-  serkeh:   { top: 7, left: 3 },  // vinegar — up 3%, right 3%
+  serkeh:   { top: 5, left: 3 },  // vinegar — down 1% from prev
   sib:      { top: 10 },          // apple
   sabzeh:   { top: 7, left: -8 },  // wheatgrass — up 3%, left 8%
   sir:      { top: 5 },           // garlic
   senjed:   { top: 5 },
   tokhmeh:  { top: 3, left: 3 },   // eggs — up 2%, right 3%
-  samanu:   { top: 0 },
+  samanu:   { top: 0, left: -2 },  // left 2%
   somaq:    { top: 0, left: -2 }, // sumac — left 2%
   sekkeh:   { top: -5, left: -3 }, // coins — up 2%, left 3%
 };
@@ -163,10 +163,20 @@ export default function SofrehPreview({ selections, cropToSofreh = false, deskto
   const [scale, setScale] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
   const [photos, setPhotos] = useState<Record<number, string>>({});
+  const [hiddenFrames, setHiddenFrames] = useState<Set<number>>(new Set());
   const fileInputRefs = useRef<Record<number, HTMLInputElement | null>>({});
 
   const handleFrameClick = useCallback((frameId: number) => {
     fileInputRefs.current[frameId]?.click();
+  }, []);
+
+  const handleRemoveFrame = useCallback((frameId: number) => {
+    setHiddenFrames((prev) => new Set(prev).add(frameId));
+    setPhotos((prev) => {
+      const next = { ...prev };
+      delete next[frameId];
+      return next;
+    });
   }, []);
 
   const handleFileChange = useCallback((frameId: number, e: React.ChangeEvent<HTMLInputElement>) => {
@@ -207,6 +217,12 @@ export default function SofrehPreview({ selections, cropToSofreh = false, deskto
 
   const mobileSizeBoost: Record<string, number> = {
     sabzeh: 1.10,  // wheatgrass 10% bigger on mobile
+    samanu: 1.18,  // samanu 18% bigger on mobile
+    somaq: 1.16,   // somaq 16% bigger on mobile
+    sekkeh: 1.05,  // coins 5% bigger on mobile
+    sir: 1.05,     // garlic 5% bigger on mobile
+    senjed: 1.11,  // senjed 11% bigger on mobile
+    serkeh: 1.11,  // vinegar 11% bigger on mobile
   };
 
   const getScaledSize = (itemId: string) => {
@@ -233,29 +249,43 @@ export default function SofrehPreview({ selections, cropToSofreh = false, deskto
       <div className="absolute inset-0 bg-[#fffbf1]" />
 
       {/* Photo frame placeholders */}
-      {showPhotoFrames && (isMobile ? mobileFrames : desktopFrames).map((frame) => (
+      {showPhotoFrames && (isMobile ? mobileFrames : desktopFrames)
+        .filter((frame) => !hiddenFrames.has(frame.id))
+        .map((frame) => (
         <div
           key={frame.id}
-          onClick={() => handleFrameClick(frame.id)}
-          className="absolute border-2 border-dashed border-[#c4a97d]/40 rounded-lg flex items-center justify-center cursor-pointer hover:border-[#c4a97d]/70 transition-colors overflow-hidden"
-          style={{ top: frame.top, left: frame.left, width: frame.width, aspectRatio: frame.aspectRatio, zIndex: 1 }}
+          className="absolute group"
+          style={{ top: frame.top, left: frame.left, width: frame.width, zIndex: 1 }}
         >
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            ref={(el) => { fileInputRefs.current[frame.id] = el; }}
-            onChange={(e) => handleFileChange(frame.id, e)}
-          />
-          {photos[frame.id] ? (
-            <img
-              src={photos[frame.id]}
-              alt="Uploaded photo"
-              className="absolute inset-0 w-full h-full object-cover rounded-lg"
+          <div
+            onClick={() => handleFrameClick(frame.id)}
+            className="relative border-2 border-dashed border-[#c4a97d]/40 rounded-lg flex items-center justify-center cursor-pointer hover:border-[#c4a97d]/70 transition-colors overflow-hidden"
+            style={{ aspectRatio: frame.aspectRatio }}
+          >
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              ref={(el) => { fileInputRefs.current[frame.id] = el; }}
+              onChange={(e) => handleFileChange(frame.id, e)}
             />
-          ) : (
-            <span className="text-[#c4a97d]/50 text-3xl font-light">+</span>
-          )}
+            {photos[frame.id] ? (
+              <img
+                src={photos[frame.id]}
+                alt="Uploaded photo"
+                className="absolute inset-0 w-full h-full object-cover rounded-lg"
+              />
+            ) : (
+              <span className="text-[#c4a97d]/50 text-3xl font-light">+</span>
+            )}
+          </div>
+          <button
+            onClick={(e) => { e.stopPropagation(); handleRemoveFrame(frame.id); }}
+            className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-[#c4a97d]/60 hover:bg-[#c4a97d] text-white text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10"
+            aria-label="Remove frame"
+          >
+            ×
+          </button>
         </div>
       ))}
 

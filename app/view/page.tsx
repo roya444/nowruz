@@ -8,6 +8,7 @@ import SofrehPreview from "@/components/SofrehPreview";
 import DownloadButton from "@/components/DownloadButton";
 import NavBar from "@/components/NavBar";
 import Link from "next/link";
+import MusicPlayer from "@/components/MusicPlayer";
 
 export default function ViewPage() {
   const router = useRouter();
@@ -88,6 +89,10 @@ export default function ViewPage() {
             <SofrehPreview selections={selections} showPhotoFrames />
           </div>
         </motion.div>
+
+        <div className="max-w-xs mx-auto mb-6">
+          <MusicPlayer />
+        </div>
 
         <motion.div
           initial={{ opacity: 0 }}

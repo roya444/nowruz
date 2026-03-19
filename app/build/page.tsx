@@ -9,6 +9,7 @@ import NavBar from "@/components/NavBar";
 import AccordionItemList from "@/components/AccordionItemList";
 import SofrehPreview from "@/components/SofrehPreview";
 import VariantPicker from "@/components/VariantPicker";
+import MusicPlayer from "@/components/MusicPlayer";
 
 export default function BuildPage() {
   const router = useRouter();
@@ -87,6 +88,7 @@ export default function BuildPage() {
           <div className="flex flex-row gap-8 items-start h-full">
             {/* Left: Accordion list */}
             <div className="w-[40%] overflow-y-auto h-full">
+              <MusicPlayer />
               <AccordionItemList
                 items={sofrehItems.filter((i) => !i.hidden)}
                 selections={selections}
@@ -133,6 +135,7 @@ export default function BuildPage() {
 
           {/* Category carousel */}
           <div className="px-4 pt-6 pb-4">
+            <MusicPlayer />
             {(() => {
               const currentItem = visibleItems[mobileCategoryIdx];
               const sel = selections.find((s) => s.itemId === currentItem.id);
