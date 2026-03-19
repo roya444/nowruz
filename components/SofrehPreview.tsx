@@ -152,7 +152,7 @@ const zIndexMap: Record<string, number> = {
   sir:      13,  // behind samanu (14)
   somaq:    23,  // behind garlic (24), in front of apple (22)
   serkeh:   1,   // behind fishbowl
-  sabzeh:   30,  // in front of vinegar (29)
+  sabzeh:   28,  // behind eggs (30), in front of vinegar
   tokhmeh:  30,
   sekkeh:   30,
   shirini:  30,
