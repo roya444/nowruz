@@ -23,6 +23,8 @@ export default function MusicProvider({ children }: { children: ReactNode }) {
   const [title, setTitle] = useState<string | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const playerRef = useRef<any>(null);
+  const readyRef = useRef(false);
+  const pendingPlayRef = useRef(false);
   const iframeRef = useRef<HTMLDivElement>(null);
 
   const initPlayer = useCallback(() => {
@@ -47,20 +49,27 @@ export default function MusicProvider({ children }: { children: ReactNode }) {
         width: "0",
         videoId: YOUTUBE_VIDEO_ID,
         playerVars: {
-          autoplay: 1,
           loop: 1,
           playlist: YOUTUBE_VIDEO_ID,
         },
         events: {
           onReady: () => {
+            readyRef.current = true;
             const videoData = playerRef.current?.getVideoData?.();
             if (videoData?.title) setTitle(videoData.title);
-            playerRef.current?.playVideo();
-            setPlaying(true);
+            if (pendingPlayRef.current) {
+              pendingPlayRef.current = false;
+              playerRef.current?.playVideo();
+              setPlaying(true);
+            }
           },
-          onStateChange: () => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          onStateChange: (event: any) => {
             const videoData = playerRef.current?.getVideoData?.();
             if (videoData?.title) setTitle(videoData.title);
+            // Sync state with actual player
+            if (event.data === 1) setPlaying(true);
+            else if (event.data === 2) setPlaying(false);
           },
         },
       });
@@ -69,20 +78,20 @@ export default function MusicProvider({ children }: { children: ReactNode }) {
 
   const togglePlay = useCallback(() => {
     if (!playerRef.current) {
+      pendingPlayRef.current = true;
       initPlayer();
-      // Don't set playing here — onReady will handle it
       return;
     }
-    // Check actual player state instead of our state
+    if (!readyRef.current) {
+      pendingPlayRef.current = true;
+      return;
+    }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const state = playerRef.current.getPlayerState?.();
-    // YT.PlayerState.PLAYING === 1
     if (state === 1) {
       playerRef.current.pauseVideo();
-      setPlaying(false);
     } else {
       playerRef.current.playVideo();
-      setPlaying(true);
     }
   }, [initPlayer]);
 
