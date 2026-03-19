@@ -44,7 +44,7 @@ export default function Home() {
         {/* All content centered as one block */}
         <div className="flex-1 flex flex-col items-center justify-center gap-[40px] sm:gap-[48px] md:gap-[56px] px-4 sm:px-8 md:px-[110px]">
           <div className="flex flex-col items-center gap-2 sm:gap-4">
-            <h1 className="font-[family-name:var(--font-soiglat)] text-[100px] sm:text-[130px] md:text-[180px] min-[900px]:text-[230px] lg:text-[300px] leading-[0.85] text-white">
+            <h1 className="font-[family-name:var(--font-soiglat)] text-[72px] sm:text-[130px] md:text-[180px] min-[900px]:text-[230px] lg:text-[300px] leading-[0.85] text-white">
               Nowruz
             </h1>
             <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 font-[family-name:var(--font-space-mono)] text-[14px] sm:text-[20px] md:text-[32px] text-white text-center">

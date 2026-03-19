@@ -173,34 +173,6 @@ export default function BuildPage() {
           {/* Category carousel */}
           <div className="px-4 pt-6 pb-12">
             <MusicPlayer />
-            {!allCoreSelected && (
-              <div className="mb-3">
-                <p className="font-[family-name:var(--font-space-mono)] text-[10px] text-[#FFFBF0] mb-1.5">
-                  {coreCount}/7 core items selected
-                </p>
-                <div className="flex flex-wrap gap-1.5">
-                  {coreItems.map((item) => {
-                    const done = selectedIds.has(item.id);
-                    const idx = visibleItems.findIndex((v) => v.id === item.id);
-                    return (
-                      <button
-                        key={item.id}
-                        onClick={() => {
-                          if (idx >= 0) setMobileCategoryIdx(idx);
-                        }}
-                        className={`font-[family-name:var(--font-space-mono)] text-[10px] px-2 py-0.5 rounded-full transition-all ${
-                          done
-                            ? "bg-[#FFFBF0]/20 text-[#FFFBF0]/40 line-through"
-                            : "bg-[#FFFBF0]/10 text-[#FFFBF0] hover:bg-[#FFFBF0]/20"
-                        }`}
-                      >
-                        {item.phoneticName}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
             {(() => {
               const currentItem = visibleItems[mobileCategoryIdx];
               const sel = selections.find((s) => s.itemId === currentItem.id);
