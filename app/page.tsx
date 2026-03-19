@@ -57,7 +57,7 @@ export default function Home() {
               <span>meaning &ldquo;New Day&rdquo;</span>
             </div>
           </div>
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col min-[900px]:flex-row items-center min-[900px]:items-center gap-4 min-[900px]:gap-[100px] min-[900px]:px-[100px]">
           <p className="font-[family-name:var(--font-space-mono)] text-[16px] sm:text-[16px] min-[900px]:text-[20px] text-white leading-[22px] sm:leading-[28px] text-justify max-w-[650px]">
             Celebrate this ancient holiday by building your own digital{" "}
             <strong>
