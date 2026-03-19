@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence } from "framer-motion";
+import { ReactNode } from "react";
 import { SofrehItem, ItemVariant, UserSelection } from "@/lib/types";
 import { AccordionPill, AccordionExpanded } from "./AccordionItem";
 
@@ -10,6 +11,7 @@ interface AccordionItemListProps {
   expandedItemId: string | null;
   onToggleItem: (itemId: string) => void;
   onSelectVariant: (itemId: string, variant: ItemVariant) => void;
+  coreProgressTracker?: ReactNode;
 }
 
 export default function AccordionItemList({
@@ -18,11 +20,12 @@ export default function AccordionItemList({
   expandedItemId,
   onToggleItem,
   onSelectVariant,
+  coreProgressTracker,
 }: AccordionItemListProps) {
   const coreItems = items.filter((i) => i.isCore);
   const additionalItems = items.filter((i) => !i.isCore);
 
-  const renderSection = (title: string, sectionItems: SofrehItem[]) => {
+  const renderSection = (title: string, sectionItems: SofrehItem[], afterTitle?: ReactNode) => {
     // Group items into rows of 2
     const rows: SofrehItem[][] = [];
     for (let i = 0; i < sectionItems.length; i += 2) {
@@ -34,6 +37,7 @@ export default function AccordionItemList({
         <h3 className="font-[family-name:var(--font-space-mono)] text-[11px] font-bold text-[#FFFBF0] uppercase tracking-[0.12em] mb-2">
           {title}
         </h3>
+        {afterTitle}
         <div className="flex flex-col">
           {rows.map((row, rowIdx) => {
             const expandedInRow = row.find((i) => i.id === expandedItemId);
@@ -90,8 +94,8 @@ export default function AccordionItemList({
   };
 
   return (
-    <div className="overflow-y-auto max-h-[calc(100vh-100px)] scrollbar-thin">
-      {renderSection("The 7 Haftsin Items", coreItems)}
+    <div>
+      {renderSection("The 7 Haftsin Items", coreItems, coreProgressTracker)}
       {renderSection("Additional Items", additionalItems)}
     </div>
   );

@@ -9,6 +9,8 @@ import DownloadButton from "@/components/DownloadButton";
 import NavBar from "@/components/NavBar";
 import Link from "next/link";
 import MusicPlayer from "@/components/MusicPlayer";
+import ShareButton from "@/components/ShareButton";
+import Footer from "@/components/Footer";
 
 export default function ViewPage() {
   const router = useRouter();
@@ -75,7 +77,10 @@ export default function ViewPage() {
               YOUR HAFTSiN
             </h1>
             <p className="font-[family-name:var(--font-space-mono)] text-[13px] text-[#FFFBF0]">
-              Nowruz Mobarak! Here is your personalized Haftsin table.
+              Nowruz Pirooz! <span className="font-[family-name:var(--font-noto-arabic)]">نوروز پیروز!</span> Happy New Year! Here is your personalized Haftsin table.
+            </p>
+            <p className="font-[family-name:var(--font-space-mono)] text-[13px] text-[#FFFBF0] mt-1">
+              Add photos of loved ones, share your Haftsin with friends &amp; family, or create another.
             </p>
           </motion.div>
 
@@ -86,11 +91,12 @@ export default function ViewPage() {
             transition={{ delay: 0.3 }}
             className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6"
           >
-            <div className="w-full sm:w-auto sm:min-w-[280px]">
+            <div className="hidden sm:block sm:w-auto sm:min-w-[280px]">
               <MusicPlayer />
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap justify-center">
               <DownloadButton targetRef={sofrehRef} />
+              <ShareButton targetRef={sofrehRef} />
               <Link
                 href="/build"
                 className="px-6 py-3 bg-[#FFFBF0] text-[#0F4637] rounded-[24px] font-[family-name:var(--font-space-mono)] font-bold text-[14px] tracking-[0.08em] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#FFF8E8] transition-colors whitespace-nowrap"
@@ -110,8 +116,14 @@ export default function ViewPage() {
             <SofrehPreview selections={selections} showPhotoFrames />
           </div>
         </motion.div>
+
+        {/* Music player below preview on mobile only */}
+        <div className="sm:hidden mb-6">
+          <MusicPlayer />
+        </div>
         </div>
       </div>
+      <Footer />
     </main>
   );
 }

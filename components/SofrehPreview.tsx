@@ -384,6 +384,16 @@ export default function SofrehPreview({ selections, cropToSofreh = false, deskto
           );
         })}
       </AnimatePresence>
+
+      {/* Watermark */}
+      <div className="absolute bottom-2 left-3 right-3 flex justify-between items-end z-40 pointer-events-none">
+        <span className="font-[family-name:var(--font-space-mono)] text-[12px] text-white/70">
+          created by @oyyyaaaa
+        </span>
+        <span className="font-[family-name:var(--font-space-mono)] text-[12px] text-white/70">
+          www.mynowruz.com
+        </span>
+      </div>
       </div>
     </div>
   );

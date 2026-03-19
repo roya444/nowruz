@@ -10,6 +10,7 @@ import AccordionItemList from "@/components/AccordionItemList";
 import SofrehPreview from "@/components/SofrehPreview";
 import VariantPicker from "@/components/VariantPicker";
 import MusicPlayer from "@/components/MusicPlayer";
+import Footer from "@/components/Footer";
 
 export default function BuildPage() {
   const router = useRouter();
@@ -98,39 +99,39 @@ export default function BuildPage() {
             {/* Left: Accordion list */}
             <div className="w-[40%] overflow-y-auto h-full">
               <MusicPlayer />
-              {!allCoreSelected && (
-                <div className="mb-4 px-1">
-                  <p className="font-[family-name:var(--font-space-mono)] text-[11px] text-[#FFFBF0] mb-2">
-                    {coreCount}/7 core items selected
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {coreItems.map((item) => {
-                      const done = selectedIds.has(item.id);
-                      return (
-                        <button
-                          key={item.id}
-                          onClick={() => {
-                            handleToggleItem(item.id);
-                          }}
-                          className={`font-[family-name:var(--font-space-mono)] text-[11px] px-2.5 py-1 rounded-full transition-all ${
-                            done
-                              ? "bg-[#FFFBF0]/20 text-[#FFFBF0]/40 line-through"
-                              : "bg-[#FFFBF0]/10 text-[#FFFBF0] hover:bg-[#FFFBF0]/20"
-                          }`}
-                        >
-                          {item.phoneticName}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
               <AccordionItemList
                 items={sofrehItems.filter((i) => !i.hidden)}
                 selections={selections}
                 expandedItemId={expandedItemId}
                 onToggleItem={handleToggleItem}
                 onSelectVariant={handleSelectVariant}
+                coreProgressTracker={
+                  !allCoreSelected ? (
+                    <div className="mb-3 px-1">
+                      <p className="font-[family-name:var(--font-space-mono)] text-[11px] text-[#FFFBF0] mb-2">
+                        {coreCount}/7 core items selected
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {coreItems.map((item) => {
+                          const done = selectedIds.has(item.id);
+                          return (
+                            <button
+                              key={item.id}
+                              onClick={() => handleToggleItem(item.id)}
+                              className={`font-[family-name:var(--font-space-mono)] text-[11px] px-2.5 py-1 rounded-full transition-all ${
+                                done
+                                  ? "bg-[#FFFBF0]/20 text-[#FFFBF0]/40 line-through"
+                                  : "bg-[#FFFBF0]/10 text-[#FFFBF0] hover:bg-[#FFFBF0]/20"
+                              }`}
+                            >
+                              {item.phoneticName}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : undefined
+                }
               />
             </div>
 
@@ -292,6 +293,7 @@ export default function BuildPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </main>
   );
 }

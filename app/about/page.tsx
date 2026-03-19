@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Footer from "@/components/Footer";
 
 export default function AboutPage() {
   return (
@@ -63,6 +64,7 @@ export default function AboutPage() {
           </div>
         </div>
       </motion.div>
+      <Footer />
     </main>
   );
 }
