@@ -7,8 +7,8 @@ export default function MusicPlayer() {
 
   return (
     <div className="mb-4">
-      <p className="font-[family-name:var(--font-space-mono)] text-[11px] text-white/50 mb-2 italic">
-        enjoy some persian music while you design!
+      <p className="font-[family-name:var(--font-space-mono)] text-[11px] text-[#FFFBF0] mb-2 italic">
+        Enjoy some persian music while you design!
       </p>
       <button
         onClick={togglePlay}
@@ -26,7 +26,7 @@ export default function MusicPlayer() {
             </svg>
           )}
         </span>
-        <span className="font-[family-name:var(--font-space-mono)] text-[12px] text-[#FFFBF0]/80 truncate text-left">
+        <span className="font-[family-name:var(--font-space-mono)] text-[12px] text-[#FFFBF0] truncate text-left">
           {title ?? "Persian Music"}
         </span>
         {playing && (

@@ -31,7 +31,7 @@ export default function AccordionItemList({
 
     return (
       <div className="mb-4">
-        <h3 className="font-[family-name:var(--font-space-mono)] text-[11px] font-bold text-[rgba(255,255,255,0.5)] uppercase tracking-[0.12em] mb-2">
+        <h3 className="font-[family-name:var(--font-space-mono)] text-[11px] font-bold text-[#FFFBF0] uppercase tracking-[0.12em] mb-2">
           {title}
         </h3>
         <div className="flex flex-col">

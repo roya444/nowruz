@@ -32,6 +32,15 @@ export default function BuildPage() {
 
   const allCoreSelected = coreCount === 7;
 
+  const coreItems = useMemo(
+    () => sofrehItems.filter((i) => i.isCore),
+    []
+  );
+  const selectedIds = useMemo(
+    () => new Set(selections.map((s) => s.itemId)),
+    [selections]
+  );
+
   const handleToggleItem = useCallback((itemId: string) => {
     setExpandedItemId((prev) => (prev === itemId ? null : itemId));
   }, []);
@@ -89,6 +98,33 @@ export default function BuildPage() {
             {/* Left: Accordion list */}
             <div className="w-[40%] overflow-y-auto h-full">
               <MusicPlayer />
+              {!allCoreSelected && (
+                <div className="mb-4 px-1">
+                  <p className="font-[family-name:var(--font-space-mono)] text-[11px] text-[#FFFBF0] mb-2">
+                    {coreCount}/7 core items selected
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {coreItems.map((item) => {
+                      const done = selectedIds.has(item.id);
+                      return (
+                        <button
+                          key={item.id}
+                          onClick={() => {
+                            handleToggleItem(item.id);
+                          }}
+                          className={`font-[family-name:var(--font-space-mono)] text-[11px] px-2.5 py-1 rounded-full transition-all ${
+                            done
+                              ? "bg-[#FFFBF0]/20 text-[#FFFBF0]/40 line-through"
+                              : "bg-[#FFFBF0]/10 text-[#FFFBF0] hover:bg-[#FFFBF0]/20"
+                          }`}
+                        >
+                          {item.phoneticName}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
               <AccordionItemList
                 items={sofrehItems.filter((i) => !i.hidden)}
                 selections={selections}
@@ -99,24 +135,24 @@ export default function BuildPage() {
             </div>
 
             {/* Right: Live preview */}
-            <div className="flex-1 self-start">
+            <div className="flex-1 self-start relative">
               <SofrehPreview selections={selections} />
 
-              {/* View button */}
+              {/* View button — overlays bottom of preview */}
               {allCoreSelected && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mt-6 text-center"
+                  className="absolute bottom-6 left-0 right-0 text-center z-40"
                 >
                   <button
                     onClick={handleViewSofreh}
-                    className="flex items-center gap-10 mx-auto px-10 py-4 bg-[#FFFBF0] text-[#0F4637] rounded-[24px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#FFF8E8] transition-colors"
+                    className="flex items-center gap-6 mx-auto px-6 py-3 bg-[#FFFBF0] text-[#0F4637] rounded-[24px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#FFF8E8] transition-colors"
                   >
-                    <span className="font-[family-name:var(--font-space-mono)] font-bold text-[14px] sm:text-[18px] md:text-[24px] tracking-[0.08em] whitespace-nowrap">
+                    <span className="font-[family-name:var(--font-space-mono)] font-bold text-[14px] tracking-[0.08em] whitespace-nowrap">
                       ViEW MY HAFTSiN
                     </span>
-                    <span className="text-[22px] sm:text-[26px] md:text-[32px]">
+                    <span className="text-[20px]">
                       →
                     </span>
                   </button>
@@ -136,6 +172,34 @@ export default function BuildPage() {
           {/* Category carousel */}
           <div className="px-4 pt-6 pb-4">
             <MusicPlayer />
+            {!allCoreSelected && (
+              <div className="mb-3">
+                <p className="font-[family-name:var(--font-space-mono)] text-[10px] text-[#FFFBF0] mb-1.5">
+                  {coreCount}/7 core items selected
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {coreItems.map((item) => {
+                    const done = selectedIds.has(item.id);
+                    const idx = visibleItems.findIndex((v) => v.id === item.id);
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => {
+                          if (idx >= 0) setMobileCategoryIdx(idx);
+                        }}
+                        className={`font-[family-name:var(--font-space-mono)] text-[10px] px-2 py-0.5 rounded-full transition-all ${
+                          done
+                            ? "bg-[#FFFBF0]/20 text-[#FFFBF0]/40 line-through"
+                            : "bg-[#FFFBF0]/10 text-[#FFFBF0] hover:bg-[#FFFBF0]/20"
+                        }`}
+                      >
+                        {item.phoneticName}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
             {(() => {
               const currentItem = visibleItems[mobileCategoryIdx];
               const sel = selections.find((s) => s.itemId === currentItem.id);
@@ -157,7 +221,7 @@ export default function BuildPage() {
                       <p className="font-[family-name:var(--font-space-mono)] font-semibold text-[15px] text-[#FFFBF0]">
                         {currentItem.englishName}
                       </p>
-                      <p className="font-[family-name:var(--font-space-mono)] text-[11px] text-white/50">
+                      <p className="font-[family-name:var(--font-space-mono)] text-[11px] text-[#FFFBF0]">
                         {currentItem.phoneticName} · {currentItem.farsiName}
                       </p>
                     </div>

@@ -120,13 +120,13 @@ export function AccordionExpanded({
           <p className="font-[family-name:var(--font-space-mono)] font-bold text-[15px] text-[#333]">
             {item.englishName}
           </p>
-          <p className="font-[family-name:var(--font-space-mono)] text-[12px] text-gray-500">
+          <p className="font-[family-name:var(--font-space-mono)] text-[12px] text-[#333]">
             {item.phoneticName} ·{" "}
             <span className="font-[family-name:var(--font-noto-arabic)]">
               {item.farsiName}
             </span>
           </p>
-          <p className="text-[12px] text-gray-400 italic mt-1">
+          <p className="text-[12px] text-[#333] italic mt-1">
             {item.symbolism}
           </p>
         </div>

@@ -34,14 +34,12 @@ export default function DownloadButton({ targetRef }: DownloadButtonProps) {
     <button
       onClick={handleDownload}
       disabled={loading}
-      className="px-6 py-3 bg-spring text-white rounded-xl font-semibold shadow-md hover:bg-emerald-600 transition-colors disabled:opacity-50 flex items-center gap-2"
+      className="px-6 py-3 bg-[#FFFBF0] text-[#0F4637] rounded-[24px] font-[family-name:var(--font-space-mono)] font-bold text-[14px] tracking-[0.08em] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#FFF8E8] transition-colors disabled:opacity-50 flex items-center gap-2"
     >
       {loading ? (
-        <>
-          <span className="animate-spin">⏳</span> Exporting...
-        </>
+        <span className="font-[family-name:var(--font-space-mono)] font-bold text-[14px] tracking-[0.08em]">EXPORTiNG...</span>
       ) : (
-        <>📥 Download PNG</>
+        <span>DOWNLOAD PNG</span>
       )}
     </button>
   );

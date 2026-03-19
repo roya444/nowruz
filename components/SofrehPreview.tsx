@@ -8,10 +8,10 @@ import { UserSelection } from "@/lib/types";
 // Photo frame definitions: desktop and mobile layouts
 const desktopFrames = [
   { id: 0, top: "4%", left: "5%", width: "18%", aspectRatio: "3/4" },     // 3:4 portrait, upper-left
-  { id: 1, top: "4%", left: "26%", width: "16%", aspectRatio: "4/3" },    // 4:3 landscape, upper-left
+  { id: 1, top: "4%", left: "24%", width: "14%", aspectRatio: "4/3" },    // 4:3 landscape, upper-left
   { id: 2, top: "5%", left: "60%", width: "14%", aspectRatio: "3/4" },    // 3:4 portrait
   { id: 3, top: "8%", left: "77%", width: "15%", aspectRatio: "4/3" },    // 4:3 landscape, far right
-  { id: 4, top: "22%", left: "26%", width: "12%", aspectRatio: "3/4" },   // 3:4 portrait
+  { id: 4, top: "20%", left: "24%", width: "10%", aspectRatio: "3/4" },   // 3:4 portrait
 ];
 
 // Mobile frames use aspect-ratio CSS; height is auto.
@@ -90,7 +90,7 @@ const positions: { top: string; left: string }[] = [
   { top: "95%", left: "50%" },    // 9: shirini — bottom center
   { top: "35%", left: "1%" },     // 10: goldfish — upper-left
   { top: "67%", left: "16%" },    // 11: tokhmeh (eggs)
-  { top: "16%", left: "40%" },    // 12: ayeneh (mirror) — top center
+  { top: "16%", left: "38%" },    // 12: ayeneh (mirror) — centered
 ];
 
 // Base sizes in px at the reference container width (530px).
@@ -117,12 +117,12 @@ const defaultBaseSize = { w: 80, h: 96 };
 
 // Per-variant position overrides (e.g. circular mirror sits higher)
 const variantPositionOverrides: Record<string, { top?: string; left?: string }> = {
-  "ayeneh-circular": { top: "6%" },  // 10% higher than the other mirrors
+  "ayeneh-circular": { top: "9%" },  // down 1%
 };
 
 // Mobile-only variant position overrides
 const mobileVariantOverrides: Record<string, { top?: number; left?: number }> = {
-  "ayeneh-circular": { top: 3 },  // shift circular mirror down 3% on mobile
+  "ayeneh-circular": { top: 4 },  // up 1% from prev
 };
 
 // Mobile-only position offsets (added to desktop values)
@@ -130,7 +130,7 @@ const mobileOffset: Record<string, { top?: number; left?: number }> = {
   ayeneh:   { top: 25 },          // mirror
   goldfish: { top: 20 },          // fish
   sonbol:   { top: 23 },          // hyacinth — up 2%
-  serkeh:   { top: 5, left: 3 },  // vinegar — down 1% from prev
+  serkeh:   { top: 5, left: 1 },  // vinegar — left 2%
   sib:      { top: 10 },          // apple
   sabzeh:   { top: 7, left: -8 },  // wheatgrass — up 3%, left 8%
   sir:      { top: 5 },           // garlic
@@ -143,7 +143,7 @@ const mobileOffset: Record<string, { top?: number; left?: number }> = {
 
 // Z-index for depth: back items (higher on sofreh) lower z, front items higher z
 const zIndexMap: Record<string, number> = {
-  ayeneh:   10,  // furthest back — mirror
+  ayeneh:   0,   // behind everything including vinegar
   sonbol:   2,   // behind everything except mosaic
   samanu:   14,
   goldfish: 2,   // behind everything except mosaic
@@ -151,7 +151,7 @@ const zIndexMap: Record<string, number> = {
   sib:      22,
   sir:      13,  // behind samanu (14)
   somaq:    23,  // behind garlic (24), in front of apple (22)
-  serkeh:   29,  // in front of wheatgrass (28)
+  serkeh:   1,   // behind fishbowl
   sabzeh:   30,  // in front of vinegar (29)
   tokhmeh:  30,
   sekkeh:   30,
@@ -227,7 +227,8 @@ export default function SofrehPreview({ selections, cropToSofreh = false, deskto
 
   const getScaledSize = (itemId: string) => {
     const base = baseSizeMap[itemId] ?? defaultBaseSize;
-    const mobileBoost = isMobile ? 1.11 * (mobileSizeBoost[itemId] ?? 1) : 1;
+    const mobileBoost = isMobile ? 1.22 * (mobileSizeBoost[itemId] ?? 1) : 1;
+    // Render at display size — SVGs are vector so they stay crisp
     return {
       width: Math.round(base.w * scale * mobileBoost),
       height: Math.round(base.h * scale * mobileBoost),
@@ -333,7 +334,7 @@ export default function SofrehPreview({ selections, cropToSofreh = false, deskto
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="absolute -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_4px_6px_rgba(0,0,0,0.15)]"
+              className="absolute -translate-x-1/2 -translate-y-1/2"
               style={{ top, left, zIndex: zIndexMap[item.id] ?? 15 }}
             >
               {svgPath ? (
@@ -351,7 +352,7 @@ export default function SofrehPreview({ selections, cropToSofreh = false, deskto
                   <img
                     src={svgPath}
                     alt={`${item.englishName} - ${variant.label}`}
-                    className={`relative object-contain drop-shadow-md ${
+                    className={`relative object-contain ${
                       item.id === "goldfish"
                         ? "absolute top-[30%] left-[15%] w-[55%] h-[40%]"
                         : "w-full h-full"

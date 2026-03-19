@@ -69,14 +69,35 @@ export default function ViewPage() {
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-8"
+            className="text-center mb-4"
           >
             <h1 className="font-[family-name:var(--font-space-mono)] font-bold text-2xl md:text-4xl text-[#FFFBF0] mb-2 tracking-[0.08em]">
               YOUR HAFTSiN
             </h1>
-            <p className="font-[family-name:var(--font-space-mono)] text-[13px] text-white/50">
+            <p className="font-[family-name:var(--font-space-mono)] text-[13px] text-[#FFFBF0]">
               Nowruz Mobarak! Here is your personalized Haftsin table.
             </p>
+          </motion.div>
+
+          {/* Controls row: music player left, buttons right */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6"
+          >
+            <div className="w-full sm:w-auto sm:min-w-[280px]">
+              <MusicPlayer />
+            </div>
+            <div className="flex items-center gap-3">
+              <DownloadButton targetRef={sofrehRef} />
+              <Link
+                href="/build"
+                className="px-6 py-3 bg-[#FFFBF0] text-[#0F4637] rounded-[24px] font-[family-name:var(--font-space-mono)] font-bold text-[14px] tracking-[0.08em] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#FFF8E8] transition-colors whitespace-nowrap"
+              >
+                START OVER
+              </Link>
+            </div>
           </motion.div>
 
         <motion.div
@@ -88,25 +109,6 @@ export default function ViewPage() {
           <div ref={sofrehRef} className="w-full">
             <SofrehPreview selections={selections} showPhotoFrames />
           </div>
-        </motion.div>
-
-        <div className="max-w-xs mx-auto mb-6">
-          <MusicPlayer />
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          <DownloadButton targetRef={sofrehRef} />
-          <Link
-            href="/build"
-            className="px-6 py-3 bg-[#FFFBF0] text-[#0F4637] rounded-[24px] font-[family-name:var(--font-space-mono)] font-bold text-[14px] tracking-[0.08em] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#FFF8E8] transition-colors"
-          >
-            START OVER
-          </Link>
         </motion.div>
         </div>
       </div>
