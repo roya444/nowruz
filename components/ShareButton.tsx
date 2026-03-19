@@ -13,7 +13,7 @@ export default function ShareButton({ targetRef }: ShareButtonProps) {
 
   // Check share support on mount (needs to be client-side)
   useEffect(() => {
-    if (navigator.share && navigator.canShare) {
+    if (typeof navigator.share === "function" && typeof navigator.canShare === "function") {
       const testFile = new File(["test"], "test.png", { type: "image/png" });
       setCanShare(navigator.canShare({ files: [testFile] }));
     }
