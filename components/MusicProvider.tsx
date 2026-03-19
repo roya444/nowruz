@@ -21,23 +21,27 @@ const YOUTUBE_VIDEO_ID = "HXvdra4wG0Y";
 export default function MusicProvider({ children }: { children: ReactNode }) {
   const [playing, setPlaying] = useState(false);
   const [title, setTitle] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const playerRef = useRef<any>(null);
   const iframeRef = useRef<HTMLDivElement>(null);
 
   const initPlayer = useCallback(() => {
     if (playerRef.current) return;
 
-    if (!(window as any).YT) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const win = window as any;
+    if (!win.YT) {
       const tag = document.createElement("script");
       tag.src = "https://www.youtube.com/iframe_api";
       document.head.appendChild(tag);
-      (window as any).onYouTubeIframeAPIReady = () => createPlayer();
+      win.onYouTubeIframeAPIReady = () => createPlayer();
     } else {
       createPlayer();
     }
 
     function createPlayer() {
       if (!iframeRef.current) return;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       playerRef.current = new (window as any).YT.Player(iframeRef.current, {
         height: "0",
         width: "0",

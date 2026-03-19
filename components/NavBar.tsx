@@ -4,8 +4,8 @@ interface NavBarProps {
   variant: "light" | "dark";
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function NavBar({ variant }: NavBarProps) {
-  const isLight = variant === "light";
   const lineColor = "bg-white";
   const dotColor = "bg-white";
   const textColor = "text-white";
