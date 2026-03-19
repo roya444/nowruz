@@ -39,8 +39,8 @@ export default function Home() {
         <NavBar variant="light" />
 
         {/* Center content */}
-        <div className="flex-1 flex flex-col items-center justify-center mt-4 sm:mt-16 md:mt-24 gap-2 sm:gap-6 md:gap-11 px-4 sm:px-8 md:px-[110px]">
-          <h1 className="font-[family-name:var(--font-soiglat)] text-[80px] sm:text-[140px] md:text-[200px] lg:text-[300px] leading-[0.85] text-white">
+        <div className="flex-1 flex flex-col items-center justify-center mt-4 sm:mt-16 md:mt-24 gap-0 sm:gap-6 md:gap-11 px-4 sm:px-8 md:px-[110px]">
+          <h1 className="font-[family-name:var(--font-soiglat)] text-[80px] sm:text-[110px] md:text-[160px] min-[900px]:text-[200px] lg:text-[300px] leading-[0.85] text-white">
             Nowruz
           </h1>
           <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 font-[family-name:var(--font-space-mono)] text-[14px] sm:text-[20px] md:text-[32px] text-white text-center">
@@ -56,14 +56,14 @@ export default function Home() {
 
         {/* Bottom section with gradient backdrop */}
         <div
-          className="relative pt-24 sm:pt-32 md:pt-40"
+          className="relative pt-10 sm:pt-32 md:pt-40"
           style={{
             background:
               "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.45) 40%, rgba(0,0,0,0.6) 100%)",
           }}
         >
-          <div className="flex flex-col md:flex-row items-center md:items-center gap-6 md:gap-[100px] pb-10 sm:pb-14 md:pb-[60px] px-4 md:px-[100px] justify-center">
-            <p className="font-[family-name:var(--font-space-mono)] text-[16px] sm:text-[16px] md:text-[20px] text-white leading-[22px] sm:leading-[28px] text-center md:text-justify max-w-[650px]">
+          <div className="flex flex-col min-[900px]:flex-row items-center min-[900px]:items-center gap-6 min-[900px]:gap-[100px] pb-10 sm:pb-14 min-[900px]:pb-[60px] px-4 min-[900px]:px-[100px] justify-center">
+            <p className="font-[family-name:var(--font-space-mono)] text-[16px] sm:text-[16px] min-[900px]:text-[20px] text-white leading-[22px] sm:leading-[28px] text-center min-[900px]:text-justify max-w-[650px]">
               Celebrate this ancient holiday by building your own digital{" "}
               <strong>
                 Haftsin{" "}
