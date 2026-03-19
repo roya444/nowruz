@@ -121,11 +121,16 @@ export async function exportToPng(element: HTMLElement): Promise<string> {
   const restoreUI = hideExportUI(element);
 
   try {
-    const dataUrl = await toPng(element, {
+    const opts = {
       cacheBust: true,
       pixelRatio: 2,
       backgroundColor: "#FFFBF0",
-    });
+      skipFonts: true,
+    };
+    // First pass warms Safari's image cache; discard the result
+    await toPng(element, opts).catch(() => {});
+    // Second pass captures properly with all images loaded
+    const dataUrl = await toPng(element, opts);
     return dataUrl;
   } finally {
     restoreUI();

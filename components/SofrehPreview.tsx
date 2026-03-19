@@ -182,11 +182,31 @@ export default function SofrehPreview({ selections, cropToSofreh = false, deskto
   const handleFileChange = useCallback((frameId: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      setPhotos((prev) => ({ ...prev, [frameId]: reader.result as string }));
+
+    // Resize photo to max 600px so export doesn't choke on huge base64 strings
+    const img = new Image();
+    img.onload = () => {
+      const MAX = 600;
+      let { width, height } = img;
+      if (width > MAX || height > MAX) {
+        if (width > height) {
+          height = Math.round((height * MAX) / width);
+          width = MAX;
+        } else {
+          width = Math.round((width * MAX) / height);
+          height = MAX;
+        }
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d")!;
+      ctx.drawImage(img, 0, 0, width, height);
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+      setPhotos((prev) => ({ ...prev, [frameId]: dataUrl }));
+      URL.revokeObjectURL(img.src);
     };
-    reader.readAsDataURL(file);
+    img.src = URL.createObjectURL(file);
   }, []);
 
   useEffect(() => {
@@ -282,7 +302,10 @@ export default function SofrehPreview({ selections, cropToSofreh = false, deskto
                 className="absolute inset-0 w-full h-full object-cover rounded-lg"
               />
             ) : (
-              <span className="text-[#c4a97d]/50 text-3xl font-light">+</span>
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-[#c4a97d]/50 text-3xl font-light">+</span>
+                <span className="text-[#c4a97d]/70 text-[9px]">add a photo!</span>
+              </div>
             )}
           </div>
           {photos[frame.id] && (
