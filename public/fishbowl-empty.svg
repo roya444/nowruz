@@ -17,45 +17,10 @@
 <feComposite in2="hardAlpha" operator="out"/>
 <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/>
 <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_88_2432"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feTurbulence type="fractalNoise" baseFrequency="10 10" stitchTiles="stitch" numOctaves="3" result="noise" seed="1839" />
-<feColorMatrix in="noise" type="luminanceToAlpha" result="alphaNoise" />
-<feComponentTransfer in="alphaNoise" result="coloredNoise1">
-<feFuncA type="discrete" tableValues="0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
-</feComponentTransfer>
-<feComposite operator="in" in2="shape" in="coloredNoise1" result="noise1Clipped" />
-<feFlood flood-color="rgba(94, 77, 126, 0.2)" result="color1Flood" />
-<feComposite operator="in" in2="noise1Clipped" in="color1Flood" result="color1" />
-<feMerge result="effect2_noise_88_2432">
-<feMergeNode in="shape" />
-<feMergeNode in="color1" />
-</feMerge>
-<feBlend mode="normal" in="effect2_noise_88_2432" in2="effect1_dropShadow_88_2432" result="effect2_noise_88_2432"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_88_2432" result="shape"/>
 </filter>
 <clipPath id="bgblur_0_88_2432_clip_path" transform="translate(3 -12.0371)"><path d="M149.482 18.0371H52.0678C34.6976 23.7566 0.59257 47.4606 3.13456 96.521C5.67655 145.581 35.9399 165.896 54.1575 169.921H149.482C176.491 169.921 204.135 129.885 204.135 96.521C204.135 43.1392 166.64 21.8501 149.482 18.0371Z"/>
-</clipPath><filter id="filter2_dn_88_2432" x="42.0234" y="55.0781" width="101.139" height="78.2593" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset/>
-<feGaussianBlur stdDeviation="0.5"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_88_2432"/>
-<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-<feTurbulence type="fractalNoise" baseFrequency="10 10" stitchTiles="stitch" numOctaves="3" result="noise" seed="1839" />
-<feColorMatrix in="noise" type="luminanceToAlpha" result="alphaNoise" />
-<feComponentTransfer in="alphaNoise" result="coloredNoise1">
-<feFuncA type="discrete" tableValues="0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
-</feComponentTransfer>
-<feComposite operator="in" in2="shape" in="coloredNoise1" result="noise1Clipped" />
-<feFlood flood-color="rgba(94, 77, 126, 0.2)" result="color1Flood" />
-<feComposite operator="in" in2="noise1Clipped" in="color1Flood" result="color1" />
-<feMerge result="effect2_noise_88_2432">
-<feMergeNode in="shape" />
-<feMergeNode in="color1" />
-</feMerge>
-<feBlend mode="normal" in="effect2_noise_88_2432" in2="effect1_dropShadow_88_2432" result="effect2_noise_88_2432"/>
-</filter>
+</clipPath>
 <linearGradient id="paint0_linear_88_2432" x1="97.6961" y1="124.999" x2="116.703" y2="114.832" gradientUnits="userSpaceOnUse">
 <stop stop-color="#EA9800" stop-opacity="0"/>
 <stop offset="0.456731" stop-color="#EA9800"/>

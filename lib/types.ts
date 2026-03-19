@@ -12,6 +12,7 @@ export interface SofrehItem {
   farsiName: string;
   symbolism: string;
   isCore: boolean;
+  hidden?: boolean;
   variants: ItemVariant[];
 }
 

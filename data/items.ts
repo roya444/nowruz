@@ -22,9 +22,8 @@ export const sofrehItems: SofrehItem[] = [
     symbolism: "Affluence and fertility",
     isCore: true,
     variants: [
-      { id: "samanu-golden", label: "Golden", color: "#FFB300", emoji: "🍯" },
-      { id: "samanu-amber", label: "Amber", color: "#FF8F00", emoji: "🍮" },
-      { id: "samanu-light", label: "Light", color: "#FFD54F", emoji: "🧈" },
+      { id: "samanu-brass", label: "Brass", color: "#FFB300", emoji: "🍯" },
+      { id: "samanu-gold", label: "Gold", color: "#FFD54F", emoji: "🍮" },
     ],
   },
   {
@@ -35,9 +34,8 @@ export const sofrehItems: SofrehItem[] = [
     symbolism: "Love and affection",
     isCore: true,
     variants: [
-      { id: "senjed-brown", label: "Classic", color: "#8D6E63", emoji: "🫒" },
-      { id: "senjed-golden", label: "Golden", color: "#D4A056", emoji: "✨" },
-      { id: "senjed-dark", label: "Dark", color: "#5D4037", emoji: "🤎" },
+      { id: "senjed-checkered", label: "Checkered", color: "#8D6E63", emoji: "🫒" },
+      { id: "senjed-woodgrain", label: "Woodgrain", color: "#D4A056", emoji: "✨" },
     ],
   },
   {
@@ -73,9 +71,8 @@ export const sofrehItems: SofrehItem[] = [
     symbolism: "The color of sunrise and patience",
     isCore: true,
     variants: [
-      { id: "somaq-crimson", label: "Crimson", color: "#C62828", emoji: "🌅" },
-      { id: "somaq-ruby", label: "Ruby", color: "#D32F2F", emoji: "❤️‍🔥" },
-      { id: "somaq-burgundy", label: "Burgundy", color: "#880E4F", emoji: "🫕" },
+      { id: "somaq-polkadot", label: "Polka Dot", color: "#C62828", emoji: "🌅" },
+      { id: "somaq-stripes", label: "Stripes", color: "#D32F2F", emoji: "❤️‍🔥" },
     ],
   },
   {
@@ -86,9 +83,8 @@ export const sofrehItems: SofrehItem[] = [
     symbolism: "Age and patience",
     isCore: true,
     variants: [
-      { id: "serkeh-clear", label: "White", color: "#E0E0E0", emoji: "🫙" },
-      { id: "serkeh-apple", label: "Apple Cider", color: "#FFB74D", emoji: "🍶" },
-      { id: "serkeh-red", label: "Red Wine", color: "#AD1457", emoji: "🍷" },
+      { id: "serkeh-ceramic", label: "Ceramic", color: "#E0E0E0", emoji: "🫙" },
+      { id: "serkeh-glass", label: "Glass", color: "#FFB74D", emoji: "🍶" },
     ],
   },
   {
@@ -124,6 +120,7 @@ export const sofrehItems: SofrehItem[] = [
     farsiName: "شیرینی",
     symbolism: "Sweetness of life",
     isCore: false,
+    hidden: true,
     variants: [
       { id: "shirini-baklava", label: "Baklava", color: "#FFB300", emoji: "🍪" },
       { id: "shirini-noghl", label: "Noghl", color: "#F8BBD0", emoji: "🍬" },
@@ -151,9 +148,10 @@ export const sofrehItems: SofrehItem[] = [
     symbolism: "Fertility and new life",
     isCore: false,
     variants: [
-      { id: "tokhmeh-red", label: "Red", color: "#EF5350", emoji: "🥚" },
-      { id: "tokhmeh-blue", label: "Blue", color: "#42A5F5", emoji: "🥚" },
-      { id: "tokhmeh-green", label: "Green", color: "#66BB6A", emoji: "🥚" },
+      { id: "tokhmeh-spring", label: "Spring", color: "#66BB6A", emoji: "🥚" },
+      { id: "tokhmeh-summer", label: "Summer", color: "#FFD600", emoji: "🥚" },
+      { id: "tokhmeh-fall", label: "Fall", color: "#FF7043", emoji: "🥚" },
+      { id: "tokhmeh-winter", label: "Winter", color: "#42A5F5", emoji: "🥚" },
     ],
   },
   {
@@ -164,9 +162,9 @@ export const sofrehItems: SofrehItem[] = [
     symbolism: "Self-reflection and seeing the truth",
     isCore: false,
     variants: [
-      { id: "ayeneh-oval", label: "Oval", color: "#B0BEC5", emoji: "🪞" },
-      { id: "ayeneh-round", label: "Round", color: "#CFD8DC", emoji: "🔮" },
-      { id: "ayeneh-ornate", label: "Ornate", color: "#FFD700", emoji: "✨" },
+      { id: "ayeneh-circular", label: "Circular", color: "#CFD8DC", emoji: "🔮" },
+      { id: "ayeneh-rectangular", label: "Rectangular", color: "#B0BEC5", emoji: "🪞" },
+      { id: "ayeneh-arched", label: "Arched", color: "#FFD700", emoji: "✨" },
     ],
   },
 ];

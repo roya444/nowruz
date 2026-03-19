@@ -1,11 +1,41 @@
 "use client";
 
+import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { sofrehItems } from "@/data/items";
 import { UserSelection } from "@/lib/types";
 
+// Photo frame definitions: desktop and mobile layouts
+const desktopFrames = [
+  { id: 0, top: "4%", left: "5%", width: "18%", aspectRatio: "3/4" },     // 3:4 portrait, upper-left
+  { id: 1, top: "4%", left: "26%", width: "16%", aspectRatio: "4/3" },    // 4:3 landscape, upper-left
+  { id: 2, top: "3%", left: "70%", width: "14%", aspectRatio: "3/4" },    // 3:4 portrait, upper-right
+  { id: 3, top: "8%", left: "87%", width: "10%", aspectRatio: "4/3" },    // 4:3 landscape, far right
+  { id: 4, top: "2%", left: "48%", width: "12%", aspectRatio: "3/4" },    // 3:4 portrait, top center
+];
+
+// Mobile frames use aspect-ratio CSS; height is auto.
+// Container is 9:16 so width% maps to actual px; we use aspectRatio to enforce ratios.
+const mobileFrames = [
+  // Row 1
+  { id: 0, top: "8%", left: "6%", width: "28%", aspectRatio: "3/4" },     // 3:4 portrait, top-left
+  { id: 1, top: "8%", left: "37%", width: "26%", aspectRatio: "4/3" },    // 4:3 landscape, top-center
+  { id: 2, top: "8%", left: "66%", width: "28%", aspectRatio: "3/4" },    // 3:4 portrait, top-right
+  // Row 2
+  { id: 3, top: "20%", left: "36%", width: "28%", aspectRatio: "3/4" },   // 3:4 portrait, center
+  // Row 3
+  { id: 4, top: "30%", left: "6%", width: "28%", aspectRatio: "3/4" },    // 3:4 portrait, bottom-left
+  { id: 5, top: "30%", left: "66%", width: "28%", aspectRatio: "3/4" },   // 3:4 portrait, bottom-right
+];
+
 interface SofrehPreviewProps {
   selections: UserSelection[];
+  /** When true on mobile, shifts content up to focus on the sofreh items */
+  cropToSofreh?: boolean;
+  /** Override the desktop aspect ratio (default 75%) */
+  desktopAspect?: string;
+  /** Show photo frame placeholders */
+  showPhotoFrames?: boolean;
 }
 
 // Map variant IDs to SVG illustration paths
@@ -19,36 +49,153 @@ const variantSvgMap: Record<string, string> = {
   "sib-red": "/apple-red.svg",
   "sib-green": "/apple-green.svg",
   "sib-golden": "/apple-golden.svg",
+  "senjed-checkered": "/senjed-checkered.svg",
+  "senjed-woodgrain": "/senjed-woodgrain.svg",
   "sir-white": "/garlic-white.svg",
   "sir-purple": "/garlic-purple.svg",
   "sekkeh-gold": "/coins-gold.svg",
   "sekkeh-silver": "/coins-silver.svg",
   "sekkeh-mixed": "/coins-mixed.svg",
+  "tokhmeh-spring": "/eggs-spring.svg",
+  "tokhmeh-summer": "/eggs-summer.svg",
+  "tokhmeh-fall": "/eggs-fall.svg",
+  "tokhmeh-winter": "/eggs-winter.svg",
   "goldfish-orange": "/fish-orange.svg",
   "goldfish-red": "/fish-red.svg",
   "goldfish-yellow": "/fish-yellow.svg",
+  "ayeneh-circular": "/mirror-circular.svg",
+  "ayeneh-rectangular": "/mirror-rectangular.svg",
+  "ayeneh-arched": "/mirror-arched.svg",
+  "somaq-polkadot": "/sumac-polkadot.svg",
+  "somaq-stripes": "/sumac-stripes.svg",
+  "serkeh-ceramic": "/vinegar-ceramic.svg",
+  "serkeh-glass": "/vinegar-glass.svg",
+  "samanu-brass": "/samanu-brass.svg",
+  "samanu-gold": "/samanu-gold.svg",
 };
 
-// Percentage-based positions for all 12 items
+// Percentage-based center positions measured from the Figma reference (965×696 canvas)
 const positions: { top: string; left: string }[] = [
-  // Core 7 in a circular pattern
-  { top: "8%", left: "50%" },
-  { top: "25%", left: "20%" },
-  { top: "25%", left: "80%" },
-  { top: "48%", left: "10%" },
-  { top: "48%", left: "90%" },
-  { top: "68%", left: "22%" },
-  { top: "68%", left: "78%" },
-  // Additional 6: sonbol, sekkeh, shirini, goldfish, tokhmeh, ayeneh
-  { top: "30%", left: "78%" },
-  { top: "85%", left: "35%" },
-  { top: "85%", left: "65%" },
-  { top: "58%", left: "50%" },
-  { top: "75%", left: "50%" },
-  { top: "92%", left: "50%" },
+  // Core 7
+  { top: "52%", left: "38%" },    // 0: sabzeh — center-left
+  { top: "65%", left: "55%" },    // 1: samanu — right of mirror
+  { top: "63%", left: "10%" },    // 2: senjed
+  { top: "54%", left: "64%" },    // 3: sir (garlic) — right
+  { top: "52%", left: "81%" },    // 4: sib (apple) — right side
+  { top: "68%", left: "71%" },    // 5: somaq — right of garlic
+  { top: "48%", left: "25%" },    // 6: serkeh (vinegar)
+  // Additional 6
+  { top: "24%", left: "68%" },    // 7: sonbol (hyacinth) — upper-right
+  { top: "78%", left: "56%" },    // 8: sekkeh (coins)
+  { top: "95%", left: "50%" },    // 9: shirini — bottom center
+  { top: "35%", left: "1%" },     // 10: goldfish — upper-left
+  { top: "67%", left: "16%" },    // 11: tokhmeh (eggs)
+  { top: "16%", left: "40%" },    // 12: ayeneh (mirror) — top center
 ];
 
-export default function SofrehPreview({ selections }: SofrehPreviewProps) {
+// Base sizes in px at the reference container width (530px).
+// Items scale proportionally when the container is smaller or larger.
+const REFERENCE_WIDTH = 530;
+
+const baseSizeMap: Record<string, { w: number; h: number }> = {
+  ayeneh:   { w: 108, h: 207 },
+  goldfish: { w: 137, h: 137 },
+  sonbol:   { w: 103, h: 164 },
+  tokhmeh:  { w: 145, h: 126 },
+  sekkeh:   { w: 120, h: 66 },
+  senjed:   { w: 86, h: 53 },
+  sabzeh:   { w: 89, h: 103 },
+  sib:      { w: 68, h: 77 },
+  sir:      { w: 42, h: 48 },
+  samanu:   { w: 78, h: 48 },
+  somaq:    { w: 72, h: 53 },
+  serkeh:   { w: 54, h: 78 },
+  shirini:  { w: 78, h: 48 },
+};
+
+const defaultBaseSize = { w: 80, h: 96 };
+
+// Per-variant position overrides (e.g. circular mirror sits higher)
+const variantPositionOverrides: Record<string, { top?: string; left?: string }> = {
+  "ayeneh-circular": { top: "6%" },  // 10% higher than the other mirrors
+};
+
+// Mobile-only variant position overrides
+const mobileVariantOverrides: Record<string, { top?: number; left?: number }> = {
+  "ayeneh-circular": { top: 3 },  // shift circular mirror down 3% on mobile
+};
+
+// Mobile-only position offsets (added to desktop values)
+const mobileOffset: Record<string, { top?: number; left?: number }> = {
+  ayeneh:   { top: 25 },          // mirror
+  goldfish: { top: 20 },          // fish
+  sonbol:   { top: 23 },          // hyacinth — up 2%
+  serkeh:   { top: 7, left: 3 },  // vinegar — up 3%, right 3%
+  sib:      { top: 10 },          // apple
+  sabzeh:   { top: 7, left: -8 },  // wheatgrass — up 3%, left 8%
+  sir:      { top: 5 },           // garlic
+  senjed:   { top: 5 },
+  tokhmeh:  { top: 3, left: 3 },   // eggs — up 2%, right 3%
+  samanu:   { top: 0 },
+  somaq:    { top: 0, left: -2 }, // sumac — left 2%
+  sekkeh:   { top: -5, left: -3 }, // coins — up 2%, left 3%
+};
+
+// Z-index for depth: back items (higher on sofreh) lower z, front items higher z
+const zIndexMap: Record<string, number> = {
+  ayeneh:   10,  // furthest back — mirror
+  sonbol:   2,   // behind everything except mosaic
+  samanu:   14,
+  goldfish: 2,   // behind everything except mosaic
+  senjed:   20,
+  sib:      22,
+  sir:      13,  // behind samanu (14)
+  somaq:    23,  // behind garlic (24), in front of apple (22)
+  serkeh:   29,  // in front of wheatgrass (28)
+  sabzeh:   30,  // in front of vinegar (29)
+  tokhmeh:  30,
+  sekkeh:   30,
+  shirini:  30,
+};
+
+export default function SofrehPreview({ selections, cropToSofreh = false, desktopAspect = "75%", showPhotoFrames = false }: SofrehPreviewProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
+  const [photos, setPhotos] = useState<Record<number, string>>({});
+  const fileInputRefs = useRef<Record<number, HTMLInputElement | null>>({});
+
+  const handleFrameClick = useCallback((frameId: number) => {
+    fileInputRefs.current[frameId]?.click();
+  }, []);
+
+  const handleFileChange = useCallback((frameId: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    setPhotos((prev) => ({ ...prev, [frameId]: url }));
+  }, []);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new ResizeObserver((entries) => {
+      const width = entries[0].contentRect.width;
+      setScale(width / REFERENCE_WIDTH);
+    });
+    observer.observe(el);
+
+    const handleResize = () => setIsMobile(window.innerWidth < 800);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const getVariant = (sel: UserSelection) => {
     const item = sofrehItems.find((i) => i.id === sel.itemId);
     const variant = item?.variants.find((v) => v.id === sel.variantId);
@@ -58,19 +205,65 @@ export default function SofrehPreview({ selections }: SofrehPreviewProps) {
   // Map item id to its position index
   const itemIndexMap = new Map(sofrehItems.map((item, idx) => [item.id, idx]));
 
+  const mobileSizeBoost: Record<string, number> = {
+    sabzeh: 1.10,  // wheatgrass 10% bigger on mobile
+  };
+
+  const getScaledSize = (itemId: string) => {
+    const base = baseSizeMap[itemId] ?? defaultBaseSize;
+    const mobileBoost = isMobile ? 1.11 * (mobileSizeBoost[itemId] ?? 1) : 1;
+    return {
+      width: Math.round(base.w * scale * mobileBoost),
+      height: Math.round(base.h * scale * mobileBoost),
+    };
+  };
+
   return (
     <div
+      ref={containerRef}
       className="relative w-full rounded-[25px] overflow-hidden"
-      style={{ paddingBottom: "75%" }}
+      style={{ paddingBottom: isMobile ? "177.78%" : desktopAspect }}
     >
+      {/* Inner wrapper — shifts up on mobile build view to focus on sofreh */}
+      <div
+        className="absolute inset-0"
+        style={cropToSofreh && isMobile ? { top: "-35%", bottom: "35%" } : undefined}
+      >
       {/* Cream top area */}
       <div className="absolute inset-0 bg-[#fffbf1]" />
 
-      {/* Blue mosaic bottom area with curved top edge */}
+      {/* Photo frame placeholders */}
+      {showPhotoFrames && (isMobile ? mobileFrames : desktopFrames).map((frame) => (
+        <div
+          key={frame.id}
+          onClick={() => handleFrameClick(frame.id)}
+          className="absolute border-2 border-dashed border-[#c4a97d]/40 rounded-lg flex items-center justify-center cursor-pointer hover:border-[#c4a97d]/70 transition-colors overflow-hidden"
+          style={{ top: frame.top, left: frame.left, width: frame.width, aspectRatio: frame.aspectRatio, zIndex: 1 }}
+        >
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            ref={(el) => { fileInputRefs.current[frame.id] = el; }}
+            onChange={(e) => handleFileChange(frame.id, e)}
+          />
+          {photos[frame.id] ? (
+            <img
+              src={photos[frame.id]}
+              alt="Uploaded photo"
+              className="absolute inset-0 w-full h-full object-cover rounded-lg"
+            />
+          ) : (
+            <span className="text-[#c4a97d]/50 text-3xl font-light">+</span>
+          )}
+        </div>
+      ))}
+
+      {/* Blue mosaic bottom area with curved top edge — shifted down 30% */}
       <div
         className="absolute bottom-0 left-0 right-0"
         style={{
-          height: "58%",
+          height: "40%",
           borderRadius: "50% 50% 0 0 / 60px 60px 0 0",
           backgroundColor: "#0F4637",
           backgroundImage: "url('/mosaic-tile-combined.svg')",
@@ -78,30 +271,6 @@ export default function SofrehPreview({ selections }: SofrehPreviewProps) {
           backgroundRepeat: "repeat",
         }}
       />
-
-      {/* Placeholder circles for unselected core items */}
-      {sofrehItems
-        .filter((item) => item.isCore)
-        .map((item) => {
-          const idx = itemIndexMap.get(item.id)!;
-          const pos = positions[idx];
-          const isSelected = selections.some((s) => s.itemId === item.id);
-          if (isSelected) return null;
-
-          return (
-            <div
-              key={`placeholder-${item.id}`}
-              className="absolute -translate-x-1/2 -translate-y-1/2"
-              style={{ top: pos.top, left: pos.left }}
-            >
-              <div className="w-10 h-10 md:w-14 md:h-14 rounded-full border-2 border-dashed border-amber-200/50 flex items-center justify-center">
-                <span className="text-lg md:text-xl opacity-30">
-                  {item.variants[0].emoji}
-                </span>
-              </div>
-            </div>
-          );
-        })}
 
       {/* Selected items with animation */}
       <AnimatePresence>
@@ -112,6 +281,20 @@ export default function SofrehPreview({ selections }: SofrehPreviewProps) {
           const pos = positions[idx];
 
           const svgPath = variantSvgMap[variant.id];
+          const size = getScaledSize(item.id);
+          const overrides = variantPositionOverrides[variant.id];
+          let top = overrides?.top ?? pos.top;
+          let left = overrides?.left ?? pos.left;
+
+          // Apply mobile-only position offsets
+          if (isMobile) {
+            const mo = mobileOffset[item.id];
+            if (mo?.top) top = `${parseFloat(top) + mo.top}%`;
+            if (mo?.left) left = `${parseFloat(left) + mo.left}%`;
+            const mvo = mobileVariantOverrides[variant.id];
+            if (mvo?.top) top = `${parseFloat(top) + mvo.top}%`;
+            if (mvo?.left) left = `${parseFloat(left) + mvo.left}%`;
+          }
 
           return (
             <motion.div
@@ -120,11 +303,14 @@ export default function SofrehPreview({ selections }: SofrehPreviewProps) {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="absolute -translate-x-1/2 -translate-y-1/2"
-              style={{ top: pos.top, left: pos.left }}
+              className="absolute -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_4px_6px_rgba(0,0,0,0.15)]"
+              style={{ top, left, zIndex: zIndexMap[item.id] ?? 15 }}
             >
               {svgPath ? (
-                <div className={`relative ${item.id === "goldfish" ? "w-24 h-28 md:w-36 md:h-40" : "w-20 h-24 md:w-28 md:h-36"}`}>
+                <div
+                  className="relative"
+                  style={{ width: size.width, height: size.height }}
+                >
                   {item.id === "goldfish" && (
                     <img
                       src="/fishbowl-empty.svg"
@@ -143,14 +329,22 @@ export default function SofrehPreview({ selections }: SofrehPreviewProps) {
                   />
                 </div>
               ) : (
-                <div className="bg-white/90 backdrop-blur-sm rounded-2xl px-2 py-1.5 md:px-3 md:py-2 shadow-lg text-center border border-amber-100">
-                  <span className="text-xl md:text-3xl block">
+                <div
+                  className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg text-center border border-amber-100"
+                  style={{
+                    padding: `${Math.round(8 * scale)}px ${Math.round(12 * scale)}px`,
+                  }}
+                >
+                  <span className="block" style={{ fontSize: Math.round(28 * scale) }}>
                     {variant.emoji}
                   </span>
-                  <p className="text-[9px] md:text-xs font-semibold text-[#333] mt-0.5">
+                  <p
+                    className="font-semibold text-[#333]"
+                    style={{ fontSize: Math.round(12 * scale), marginTop: 2 }}
+                  >
                     {item.phoneticName}
                   </p>
-                  <p className="text-[8px] md:text-[10px] text-gray-500">
+                  <p className="text-gray-500" style={{ fontSize: Math.round(10 * scale) }}>
                     {variant.label}
                   </p>
                 </div>
@@ -159,6 +353,7 @@ export default function SofrehPreview({ selections }: SofrehPreviewProps) {
           );
         })}
       </AnimatePresence>
+      </div>
     </div>
   );
 }

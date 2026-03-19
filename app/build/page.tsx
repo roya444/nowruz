@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { sofrehItems } from "@/data/items";
@@ -8,13 +8,19 @@ import { UserSelection, ItemVariant } from "@/lib/types";
 import NavBar from "@/components/NavBar";
 import AccordionItemList from "@/components/AccordionItemList";
 import SofrehPreview from "@/components/SofrehPreview";
+import VariantPicker from "@/components/VariantPicker";
 
 export default function BuildPage() {
   const router = useRouter();
   const [selections, setSelections] = useState<UserSelection[]>([]);
   const [expandedItemId, setExpandedItemId] = useState<string | null>(
-    sofrehItems[0].id
+    "sabzeh"
   );
+  const visibleItems = useMemo(
+    () => sofrehItems.filter((i) => !i.hidden),
+    []
+  );
+  const [mobileCategoryIdx, setMobileCategoryIdx] = useState(0);
 
   const coreCount = useMemo(() => {
     const coreIds = new Set(
@@ -35,16 +41,6 @@ export default function BuildPage() {
         const filtered = prev.filter((s) => s.itemId !== itemId);
         return [...filtered, { itemId, variantId: variant.id }];
       });
-
-      // Auto-advance to next item after 400ms
-      setTimeout(() => {
-        const currentIdx = sofrehItems.findIndex((i) => i.id === itemId);
-        if (currentIdx < sofrehItems.length - 1) {
-          setExpandedItemId(sofrehItems[currentIdx + 1].id);
-        } else {
-          setExpandedItemId(null);
-        }
-      }, 400);
     },
     []
   );
@@ -86,13 +82,13 @@ export default function BuildPage() {
         {/* Nav bar */}
         <NavBar variant="dark" />
 
-        {/* Two-panel layout */}
-        <div className="pt-6 md:pt-10 px-4 md:px-[64px] flex-1 min-h-0">
-          <div className="flex flex-col lg:flex-row gap-6 md:gap-8 items-start h-full">
+        {/* Desktop: Two-panel layout */}
+        <div className="hidden min-[800px]:block pt-10 px-[64px] flex-1 min-h-0">
+          <div className="flex flex-row gap-8 items-start h-full">
             {/* Left: Accordion list */}
-            <div className="w-full lg:w-[40%] overflow-y-auto h-full">
+            <div className="w-[40%] overflow-y-auto h-full">
               <AccordionItemList
-                items={sofrehItems}
+                items={sofrehItems.filter((i) => !i.hidden)}
                 selections={selections}
                 expandedItemId={expandedItemId}
                 onToggleItem={handleToggleItem}
@@ -101,7 +97,7 @@ export default function BuildPage() {
             </div>
 
             {/* Right: Live preview */}
-            <div className="w-full lg:flex-1 lg:self-start">
+            <div className="flex-1 self-start">
               <SofrehPreview selections={selections} />
 
               {/* View button */}
@@ -125,6 +121,107 @@ export default function BuildPage() {
                 </motion.div>
               )}
             </div>
+          </div>
+        </div>
+
+        {/* Mobile: Preview on top, carousel category picker below */}
+        <div className="min-[800px]:hidden flex-1 min-h-0 flex flex-col overflow-hidden">
+          {/* Preview */}
+          <div className="flex-1 min-h-0 px-4 pt-4 overflow-hidden">
+            <SofrehPreview selections={selections} cropToSofreh />
+          </div>
+
+          {/* Category carousel */}
+          <div className="px-4 pt-6 pb-4">
+            {(() => {
+              const currentItem = visibleItems[mobileCategoryIdx];
+              const sel = selections.find((s) => s.itemId === currentItem.id);
+              return (
+                <div>
+                  {/* Arrow nav + category name */}
+                  <div className="flex items-center justify-between mb-3">
+                    <button
+                      onClick={() =>
+                        setMobileCategoryIdx((prev) =>
+                          prev > 0 ? prev - 1 : visibleItems.length - 1
+                        )
+                      }
+                      className="w-10 h-10 flex items-center justify-center rounded-full bg-[#FFFBF0] text-[#0F4637]"
+                    >
+                      <span className="text-lg font-bold">←</span>
+                    </button>
+                    <div className="text-center">
+                      <p className="font-[family-name:var(--font-space-mono)] font-semibold text-[15px] text-[#FFFBF0]">
+                        {currentItem.englishName}
+                      </p>
+                      <p className="font-[family-name:var(--font-space-mono)] text-[11px] text-white/50">
+                        {currentItem.phoneticName} · {currentItem.farsiName}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() =>
+                        setMobileCategoryIdx((prev) =>
+                          prev < visibleItems.length - 1 ? prev + 1 : 0
+                        )
+                      }
+                      className="w-10 h-10 flex items-center justify-center rounded-full bg-[#FFFBF0] text-[#0F4637]"
+                    >
+                      <span className="text-lg font-bold">→</span>
+                    </button>
+                  </div>
+
+                  {/* Variant picker */}
+                  <VariantPicker
+                    variants={currentItem.variants}
+                    selectedId={sel?.variantId}
+                    onSelect={(variant) =>
+                      handleSelectVariant(currentItem.id, variant)
+                    }
+                  />
+
+                  {/* Progress dots */}
+                  <div className="flex justify-center gap-1.5 mt-3">
+                    {visibleItems.map((item, idx) => {
+                      const isSelected = selections.some(
+                        (s) => s.itemId === item.id
+                      );
+                      return (
+                        <button
+                          key={item.id}
+                          onClick={() => setMobileCategoryIdx(idx)}
+                          className={`w-2 h-2 rounded-full transition-all ${
+                            idx === mobileCategoryIdx
+                              ? "bg-[#FFFBF0] scale-125"
+                              : isSelected
+                              ? "bg-[#FFFBF0]/60"
+                              : "bg-white/25"
+                          }`}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* View button */}
+            {allCoreSelected && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-4 text-center pb-2"
+              >
+                <button
+                  onClick={handleViewSofreh}
+                  className="flex items-center gap-6 mx-auto px-8 py-3 bg-[#FFFBF0] text-[#0F4637] rounded-[24px] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#FFF8E8] transition-colors"
+                >
+                  <span className="font-[family-name:var(--font-space-mono)] font-bold text-[14px] tracking-[0.08em] whitespace-nowrap">
+                    ViEW MY HAFTSiN
+                  </span>
+                  <span className="text-[22px]">→</span>
+                </button>
+              </motion.div>
+            )}
           </div>
         </div>
       </div>

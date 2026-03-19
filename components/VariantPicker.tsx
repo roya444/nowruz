@@ -13,14 +13,29 @@ const variantSvgMap: Record<string, string> = {
   "sib-red": "/apple-red.svg",
   "sib-green": "/apple-green.svg",
   "sib-golden": "/apple-golden.svg",
+  "senjed-checkered": "/senjed-checkered.svg",
+  "senjed-woodgrain": "/senjed-woodgrain.svg",
   "sir-white": "/garlic-white.svg",
   "sir-purple": "/garlic-purple.svg",
   "sekkeh-gold": "/coins-gold.svg",
   "sekkeh-silver": "/coins-silver.svg",
   "sekkeh-mixed": "/coins-mixed.svg",
+  "tokhmeh-spring": "/eggs-spring.svg",
+  "tokhmeh-summer": "/eggs-summer.svg",
+  "tokhmeh-fall": "/eggs-fall.svg",
+  "tokhmeh-winter": "/eggs-winter.svg",
   "goldfish-orange": "/fish-orange.svg",
   "goldfish-red": "/fish-red.svg",
   "goldfish-yellow": "/fish-yellow.svg",
+  "ayeneh-circular": "/mirror-circular.svg",
+  "ayeneh-rectangular": "/mirror-rectangular.svg",
+  "ayeneh-arched": "/mirror-arched.svg",
+  "somaq-polkadot": "/sumac-polkadot.svg",
+  "somaq-stripes": "/sumac-stripes.svg",
+  "serkeh-ceramic": "/vinegar-ceramic.svg",
+  "serkeh-glass": "/vinegar-glass.svg",
+  "samanu-brass": "/samanu-brass.svg",
+  "samanu-gold": "/samanu-gold.svg",
 };
 
 interface VariantPickerProps {
@@ -44,8 +59,8 @@ export default function VariantPicker({
             onClick={() => onSelect(v)}
             className={`flex flex-col items-center gap-1 px-4 py-3 rounded-xl border-2 transition-all ${
               selectedId === v.id
-                ? "border-spring bg-green-50 shadow-md scale-105"
-                : "border-gray-200 hover:border-gold hover:bg-amber-50"
+                ? "border-spring bg-[#FFFFFF] shadow-md scale-105"
+                : "border-gray-200 bg-[#FFFFFF] hover:border-gold"
             }`}
           >
             {svgPath ? (
@@ -57,7 +72,7 @@ export default function VariantPicker({
             ) : (
               <span className="text-2xl">{v.emoji}</span>
             )}
-            <span className="text-xs font-medium text-gray-700">{v.label}</span>
+            <span className="font-[family-name:var(--font-space-mono)] text-xs font-medium text-gray-700">{v.label}</span>
           </button>
         );
       })}

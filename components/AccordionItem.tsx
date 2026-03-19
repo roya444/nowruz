@@ -4,6 +4,41 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SofrehItem, ItemVariant } from "@/lib/types";
 import VariantPicker from "./VariantPicker";
 
+const pillSvgMap: Record<string, string> = {
+  "sonbol-purple": "/hyacinth-blue.svg",
+  "sonbol-pink": "/hyacinth-pink.svg",
+  "sonbol-yellow": "/hyacinth-yellow.svg",
+  "sabzeh-wheat": "/sabzeh-wheatgrass.svg",
+  "sabzeh-lentil": "/sabzeh-lentil.svg",
+  "sabzeh-mungbean": "/sabzeh-mungbean.svg",
+  "sib-red": "/apple-red.svg",
+  "sib-green": "/apple-green.svg",
+  "sib-golden": "/apple-golden.svg",
+  "senjed-checkered": "/senjed-checkered.svg",
+  "senjed-woodgrain": "/senjed-woodgrain.svg",
+  "sir-white": "/garlic-white.svg",
+  "sir-purple": "/garlic-purple.svg",
+  "sekkeh-gold": "/coins-gold.svg",
+  "sekkeh-silver": "/coins-silver.svg",
+  "sekkeh-mixed": "/coins-mixed.svg",
+  "tokhmeh-spring": "/eggs-spring.svg",
+  "tokhmeh-summer": "/eggs-summer.svg",
+  "tokhmeh-fall": "/eggs-fall.svg",
+  "tokhmeh-winter": "/eggs-winter.svg",
+  "goldfish-orange": "/fish-orange.svg",
+  "goldfish-red": "/fish-red.svg",
+  "goldfish-yellow": "/fish-yellow.svg",
+  "ayeneh-circular": "/mirror-circular.svg",
+  "ayeneh-rectangular": "/mirror-rectangular.svg",
+  "ayeneh-arched": "/mirror-arched.svg",
+  "somaq-polkadot": "/sumac-polkadot.svg",
+  "somaq-stripes": "/sumac-stripes.svg",
+  "serkeh-ceramic": "/vinegar-ceramic.svg",
+  "serkeh-glass": "/vinegar-glass.svg",
+  "samanu-brass": "/samanu-brass.svg",
+  "samanu-gold": "/samanu-gold.svg",
+};
+
 interface AccordionPillProps {
   item: SofrehItem;
   isExpanded: boolean;
@@ -20,6 +55,8 @@ export function AccordionPill({
   const selectedVariant = item.variants.find(
     (v) => v.id === selectedVariantId
   );
+  const defaultVariantId = item.variants[0].id;
+  const displaySvg = pillSvgMap[selectedVariant?.id ?? defaultVariantId];
   const displayEmoji = selectedVariant?.emoji ?? item.variants[0].emoji;
 
   return (
@@ -36,8 +73,12 @@ export function AccordionPill({
           : "border-bottom-left-radius 0.15s 0.15s, border-bottom-right-radius 0.15s 0.15s",
       }}
     >
-      <span className="text-xl">{displayEmoji}</span>
-      <span className="font-[family-name:var(--font-space-mono)] text-[13px] text-[#333] flex-1 text-left truncate">
+      {displaySvg ? (
+        <img src={displaySvg} alt="" className="w-6 h-7 object-contain" />
+      ) : (
+        <span className="text-xl">{displayEmoji}</span>
+      )}
+      <span className="font-[family-name:var(--font-space-mono)] text-[16px] font-semibold text-[#333] flex-1 text-left truncate">
         {item.phoneticName}
       </span>
       {selectedVariantId && !isExpanded && (
