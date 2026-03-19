@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { Space_Mono, Noto_Sans_Arabic } from "next/font/google";
 import "./globals.css";
 import MusicProvider from "@/components/MusicProvider";
+import { Analytics } from "@vercel/analytics/next";
 
 const soiglat = localFont({
   src: "./fonts/Soiglat-Regular.ttf",
@@ -41,6 +42,7 @@ export default function RootLayout({
         className={`${soiglat.variable} ${spaceMono.variable} ${notoSansArabic.variable} antialiased`}
       >
         <MusicProvider>{children}</MusicProvider>
+        <Analytics />
       </body>
     </html>
   );

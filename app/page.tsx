@@ -39,7 +39,7 @@ export default function Home() {
         <NavBar variant="light" />
 
         {/* Center content */}
-        <div className="flex-1 flex flex-col items-center justify-center mt-12 sm:mt-16 md:mt-24 gap-4 sm:gap-6 md:gap-11 px-4 sm:px-8 md:px-[110px]">
+        <div className="flex-1 flex flex-col items-center justify-center mt-4 sm:mt-16 md:mt-24 gap-2 sm:gap-6 md:gap-11 px-4 sm:px-8 md:px-[110px]">
           <h1 className="font-[family-name:var(--font-soiglat)] text-[80px] sm:text-[140px] md:text-[200px] lg:text-[300px] leading-[0.85] text-white">
             Nowruz
           </h1>
@@ -63,7 +63,7 @@ export default function Home() {
           }}
         >
           <div className="flex flex-col md:flex-row items-center md:items-center gap-6 md:gap-[100px] pb-10 sm:pb-14 md:pb-[60px] px-4 md:px-[100px] justify-center">
-            <p className="font-[family-name:var(--font-space-mono)] text-[13px] sm:text-[16px] md:text-[20px] text-white leading-[28px] text-center md:text-justify max-w-[650px]">
+            <p className="font-[family-name:var(--font-space-mono)] text-[16px] sm:text-[16px] md:text-[20px] text-white leading-[22px] sm:leading-[28px] text-center md:text-justify max-w-[650px]">
               Celebrate this ancient holiday by building your own digital{" "}
               <strong>
                 Haftsin{" "}
