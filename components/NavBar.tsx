@@ -28,11 +28,13 @@ export default function NavBar({ variant }: NavBarProps) {
           />
         </div>
       </div>
-      <img
-        src="/logo.svg"
-        alt=""
-        className={`w-[40px] h-[40px] sm:w-[60px] sm:h-[60px] md:w-[100px] md:h-[100px] shrink-0 ${logoOpacity}`}
-      />
+      <a href="/">
+        <img
+          src="/logo.svg"
+          alt="Home"
+          className={`w-[40px] h-[40px] sm:w-[60px] sm:h-[60px] md:w-[100px] md:h-[100px] shrink-0 ${logoOpacity}`}
+        />
+      </a>
       <div className="flex-1 flex items-center">
         <div className={`w-full h-[1px] ${lineColor} relative`}>
           <div

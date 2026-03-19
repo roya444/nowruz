@@ -7,7 +7,7 @@ import { UserSelection } from "@/lib/types";
 
 // Photo frame definitions: desktop and mobile layouts
 const desktopFrames = [
-  { id: 0, top: "4%", left: "5%", width: "18%", aspectRatio: "3/4" },     // 3:4 portrait, upper-left
+  { id: 0, top: "4%", left: "5%", width: "16%", aspectRatio: "3/4" },     // 3:4 portrait, upper-left
   { id: 1, top: "4%", left: "24%", width: "14%", aspectRatio: "4/3" },    // 4:3 landscape, upper-left
   { id: 2, top: "5%", left: "60%", width: "14%", aspectRatio: "3/4" },    // 3:4 portrait
   { id: 3, top: "8%", left: "77%", width: "15%", aspectRatio: "4/3" },    // 4:3 landscape, far right
@@ -182,8 +182,11 @@ export default function SofrehPreview({ selections, cropToSofreh = false, deskto
   const handleFileChange = useCallback((frameId: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const url = URL.createObjectURL(file);
-    setPhotos((prev) => ({ ...prev, [frameId]: url }));
+    const reader = new FileReader();
+    reader.onload = () => {
+      setPhotos((prev) => ({ ...prev, [frameId]: reader.result as string }));
+    };
+    reader.readAsDataURL(file);
   }, []);
 
   useEffect(() => {
@@ -260,7 +263,9 @@ export default function SofrehPreview({ selections, cropToSofreh = false, deskto
         >
           <div
             onClick={() => handleFrameClick(frame.id)}
-            className="relative border-2 border-dashed border-[#c4a97d]/40 rounded-lg flex items-center justify-center cursor-pointer hover:border-[#c4a97d]/70 transition-colors overflow-hidden"
+            className={`relative rounded-lg flex items-center justify-center cursor-pointer transition-colors overflow-hidden ${
+              photos[frame.id] ? "shadow-[0_2px_6px_rgba(0,0,0,0.2)]" : "border-2 border-dashed border-[#c4a97d]/40 hover:border-[#c4a97d]/70"
+            }`}
             style={{ aspectRatio: frame.aspectRatio }}
           >
             <input
@@ -280,9 +285,18 @@ export default function SofrehPreview({ selections, cropToSofreh = false, deskto
               <span className="text-[#c4a97d]/50 text-3xl font-light">+</span>
             )}
           </div>
+          {photos[frame.id] && (
+            <img
+              src={frame.aspectRatio === "4/3" ? "/frame-horizontal.svg" : "/frame-vertical.svg"}
+              alt=""
+              className="absolute inset-0 w-full h-full object-fill pointer-events-none z-[2]"
+            />
+          )}
           <button
             onClick={(e) => { e.stopPropagation(); handleRemoveFrame(frame.id); }}
-            className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-[#c4a97d]/60 hover:bg-[#c4a97d] text-white text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10"
+            className={`absolute -top-2 -right-2 w-5 h-5 rounded-full bg-[#c4a97d]/60 hover:bg-[#c4a97d] text-white text-xs flex items-center justify-center transition-opacity z-10 ${
+              isMobile ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+            }`}
             aria-label="Remove frame"
           >
             ×
@@ -339,7 +353,7 @@ export default function SofrehPreview({ selections, cropToSofreh = false, deskto
             >
               {svgPath ? (
                 <div
-                  className="relative"
+                  className={`relative ${item.id === "ayeneh" ? "drop-shadow-[0_2px_6px_rgba(0,0,0,0.2)]" : ""}`}
                   style={{ width: size.width, height: size.height }}
                 >
                   {item.id === "goldfish" && (

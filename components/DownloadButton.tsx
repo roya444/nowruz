@@ -34,12 +34,15 @@ export default function DownloadButton({ targetRef }: DownloadButtonProps) {
     <button
       onClick={handleDownload}
       disabled={loading}
-      className="px-6 py-3 bg-[#FFFBF0] text-[#0F4637] rounded-[24px] font-[family-name:var(--font-space-mono)] font-bold text-[14px] tracking-[0.08em] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#FFF8E8] transition-colors disabled:opacity-50 flex items-center gap-2"
+      className="text-[#FFFBF0] font-[family-name:var(--font-space-mono)] font-bold text-[14px] tracking-[0.08em] hover:underline transition-all disabled:opacity-50 flex items-center gap-2"
     >
       {loading ? (
         <span className="font-[family-name:var(--font-space-mono)] font-bold text-[14px] tracking-[0.08em]">EXPORTiNG...</span>
       ) : (
-        <span>DOWNLOAD PNG</span>
+        <>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>DOWNLOAD</span>
+        </>
       )}
     </button>
   );

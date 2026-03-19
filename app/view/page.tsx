@@ -92,17 +92,18 @@ export default function ViewPage() {
             className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6"
           >
             <div className="hidden sm:block sm:w-auto sm:min-w-[280px]">
-              <MusicPlayer />
+              <MusicPlayer hideLabel />
             </div>
-            <div className="flex items-center gap-3 flex-wrap justify-center">
+            <div className="flex items-center gap-6 flex-wrap justify-center">
               <DownloadButton targetRef={sofrehRef} />
-              <ShareButton targetRef={sofrehRef} />
               <Link
                 href="/build"
-                className="px-6 py-3 bg-[#FFFBF0] text-[#0F4637] rounded-[24px] font-[family-name:var(--font-space-mono)] font-bold text-[14px] tracking-[0.08em] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] hover:bg-[#FFF8E8] transition-colors whitespace-nowrap"
+                className="text-[#FFFBF0] font-[family-name:var(--font-space-mono)] font-bold text-[14px] tracking-[0.08em] hover:underline transition-all whitespace-nowrap flex items-center gap-2"
               >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                 START OVER
               </Link>
+              <ShareButton targetRef={sofrehRef} />
             </div>
           </motion.div>
 
@@ -119,7 +120,7 @@ export default function ViewPage() {
 
         {/* Music player below preview on mobile only */}
         <div className="sm:hidden mb-6">
-          <MusicPlayer />
+          <MusicPlayer hideLabel />
         </div>
         </div>
       </div>

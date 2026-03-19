@@ -2,14 +2,16 @@
 
 import { useMusic } from "./MusicProvider";
 
-export default function MusicPlayer() {
+export default function MusicPlayer({ hideLabel = false }: { hideLabel?: boolean }) {
   const { playing, title, togglePlay } = useMusic();
 
   return (
     <div className="mb-4">
-      <p className="font-[family-name:var(--font-space-mono)] text-[11px] text-[#FFFBF0] mb-2 italic">
-        Enjoy some persian music while you design!
-      </p>
+      {!hideLabel && (
+        <p className="font-[family-name:var(--font-space-mono)] text-[11px] text-[#FFFBF0] mb-2 italic">
+          Enjoy some persian music while you design!
+        </p>
+      )}
       <button
         onClick={togglePlay}
         className="flex items-center gap-3 px-4 py-2.5 rounded-full bg-[#FFFBF0]/10 hover:bg-[#FFFBF0]/15 transition-colors w-full"

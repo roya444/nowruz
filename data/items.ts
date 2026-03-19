@@ -41,7 +41,7 @@ export const sofrehItems: SofrehItem[] = [
   {
     id: "sir",
     englishName: "Garlic",
-    phoneticName: "Sīr",
+    phoneticName: "Seer",
     farsiName: "سیر",
     symbolism: "Medicine and health",
     isCore: true,
@@ -53,7 +53,7 @@ export const sofrehItems: SofrehItem[] = [
   {
     id: "sib",
     englishName: "Apple",
-    phoneticName: "Sīb",
+    phoneticName: "Seeb",
     farsiName: "سیب",
     symbolism: "Beauty and health",
     isCore: true,
@@ -116,7 +116,7 @@ export const sofrehItems: SofrehItem[] = [
   {
     id: "shirini",
     englishName: "Sweets & Pastries",
-    phoneticName: "Shīrīnī",
+    phoneticName: "Shirini",
     farsiName: "شیرینی",
     symbolism: "Sweetness of life",
     isCore: false,
@@ -130,7 +130,7 @@ export const sofrehItems: SofrehItem[] = [
   {
     id: "goldfish",
     englishName: "Goldfish",
-    phoneticName: "Māhī Qermez",
+    phoneticName: "Mahi Ghermez",
     farsiName: "ماهی قرمز",
     symbolism: "Life and movement",
     isCore: false,
