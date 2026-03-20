@@ -200,7 +200,7 @@ export default function BuildPage() {
                         {currentItem.englishName}
                       </p>
                       <p className="font-[family-name:var(--font-space-mono)] text-[11px] text-[#FFFBF0]">
-                        {currentItem.phoneticName} · {currentItem.farsiName}
+                        {currentItem.phoneticName} · {currentItem.farsiName} · {currentItem.symbolism}
                       </p>
                     </div>
                     <button

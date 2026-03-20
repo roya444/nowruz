@@ -67,14 +67,24 @@ function removeShadows(container: HTMLElement): () => void {
 }
 
 /**
- * Hides X (dismiss) buttons during export.
+ * Hides X buttons and empty frame placeholders during export.
  */
 function hideExportUI(container: HTMLElement): () => void {
   const originals: { el: HTMLElement; display: string }[] = [];
 
+  // Hide X buttons
   container.querySelectorAll<HTMLElement>('[aria-label="Remove frame"]').forEach((el) => {
     originals.push({ el, display: el.style.display });
     el.style.display = "none";
+  });
+
+  // Hide empty frame placeholders (frames with dashed borders and no uploaded photo)
+  container.querySelectorAll<HTMLElement>(".border-dashed").forEach((el) => {
+    const parent = el.closest(".absolute.group") as HTMLElement | null;
+    if (parent) {
+      originals.push({ el: parent, display: parent.style.display });
+      parent.style.display = "none";
+    }
   });
 
   return () => {

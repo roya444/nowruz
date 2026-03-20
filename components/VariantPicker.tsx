@@ -50,14 +50,14 @@ export default function VariantPicker({
   onSelect,
 }: VariantPickerProps) {
   return (
-    <div className="flex gap-3 justify-center flex-wrap">
+    <div className="flex gap-2 sm:gap-3 justify-center">
       {variants.map((v) => {
         const svgPath = variantSvgMap[v.id];
         return (
           <button
             key={v.id}
             onClick={() => onSelect(v)}
-            className={`flex flex-col items-center gap-1 px-4 py-3 rounded-xl border-2 transition-all ${
+            className={`flex flex-col items-center gap-1 px-3 sm:px-4 py-3 rounded-xl border-2 transition-all flex-1 min-w-0 ${
               selectedId === v.id
                 ? "border-spring bg-[#FFFFFF] shadow-md scale-105"
                 : "border-gray-200 bg-[#FFFFFF] hover:border-gold"
