@@ -1,6 +1,63 @@
 import { toPng } from "html-to-image";
 
 /**
+ * Builds inline @font-face CSS with base64-embedded font data so
+ * html-to-image renders custom fonts correctly in the exported PNG.
+ */
+async function buildFontEmbedCSS(): Promise<string> {
+  const fontRules: string[] = [];
+
+  try {
+    // Crawl all stylesheets to find @font-face rules from next/font
+    for (const sheet of Array.from(document.styleSheets)) {
+      try {
+        for (const rule of Array.from(sheet.cssRules)) {
+          if (rule instanceof CSSFontFaceRule) {
+            const src = rule.style.getPropertyValue("src");
+            // Extract url(...) from the src
+            const urlMatch = src.match(/url\(["']?([^"')]+)["']?\)/);
+            if (!urlMatch) continue;
+
+            let fontUrl = urlMatch[1];
+            if (fontUrl.startsWith("/")) {
+              fontUrl = window.location.origin + fontUrl;
+            }
+
+            try {
+              const res = await fetch(fontUrl);
+              const blob = await res.blob();
+              const dataUrl = await new Promise<string>((resolve) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result as string);
+                reader.readAsDataURL(blob);
+              });
+
+              // Rebuild the @font-face rule with embedded data
+              const family = rule.style.getPropertyValue("font-family");
+              const weight = rule.style.getPropertyValue("font-weight");
+              const style = rule.style.getPropertyValue("font-style") || "normal";
+              const format = fontUrl.includes(".woff2") ? "woff2" : fontUrl.includes(".woff") ? "woff" : "truetype";
+
+              fontRules.push(
+                `@font-face { font-family: ${family}; font-style: ${style}; font-weight: ${weight}; src: url(${dataUrl}) format('${format}'); }`
+              );
+            } catch {
+              // Skip fonts that can't be fetched
+            }
+          }
+        }
+      } catch {
+        // Skip cross-origin stylesheets
+      }
+    }
+  } catch {
+    // Fallback: return empty string
+  }
+
+  return fontRules.join("\n");
+}
+
+/**
  * Converts all <img> elements inside a container to inline base64 data URLs
  * so html-to-image can capture them on mobile Safari.
  */
@@ -131,11 +188,13 @@ export async function exportToPng(element: HTMLElement): Promise<string> {
   const restoreUI = hideExportUI(element);
 
   try {
+    const fontEmbedCSS = await buildFontEmbedCSS();
     const opts = {
       cacheBust: true,
       pixelRatio: 2,
       backgroundColor: "#FFFBF0",
-      skipFonts: false,
+      skipFonts: true,
+      fontEmbedCSS,
     };
     // First pass warms Safari's image cache; discard the result
     await toPng(element, opts).catch(() => {});

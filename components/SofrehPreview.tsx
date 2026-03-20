@@ -186,7 +186,7 @@ export default function SofrehPreview({ selections, cropToSofreh = false, deskto
     // Resize photo to max 600px so export doesn't choke on huge base64 strings
     const img = new Image();
     img.onload = () => {
-      const MAX = 600;
+      const MAX = 1000;
       let { width, height } = img;
       if (width > MAX || height > MAX) {
         if (width > height) {
@@ -202,7 +202,7 @@ export default function SofrehPreview({ selections, cropToSofreh = false, deskto
       canvas.height = height;
       const ctx = canvas.getContext("2d")!;
       ctx.drawImage(img, 0, 0, width, height);
-      const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.92);
       setPhotos((prev) => ({ ...prev, [frameId]: dataUrl }));
       URL.revokeObjectURL(img.src);
     };
@@ -250,7 +250,7 @@ export default function SofrehPreview({ selections, cropToSofreh = false, deskto
 
   const getScaledSize = (itemId: string) => {
     const base = baseSizeMap[itemId] ?? defaultBaseSize;
-    const mobileBoost = isMobile ? 1.22 * (mobileSizeBoost[itemId] ?? 1) : 1;
+    const mobileBoost = isMobile ? 1.20 * (mobileSizeBoost[itemId] ?? 1) : 1;
     // Render at display size — SVGs are vector so they stay crisp
     return {
       width: Math.round(base.w * scale * mobileBoost),
@@ -267,7 +267,7 @@ export default function SofrehPreview({ selections, cropToSofreh = false, deskto
       {/* Inner wrapper — shifts up on mobile build view to focus on sofreh */}
       <div
         className="absolute inset-0"
-        style={cropToSofreh && isMobile ? { top: "-35%", bottom: "35%" } : undefined}
+        style={cropToSofreh && isMobile ? { top: "-35%", bottom: "35%" } : isMobile ? { top: "1%" } : undefined}
       >
       {/* Cream top area */}
       <div className="absolute inset-0 bg-[#fffbf1]" />
