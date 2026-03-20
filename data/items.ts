@@ -3,7 +3,7 @@ import { SofrehItem } from "@/lib/types";
 export const sofrehItems: SofrehItem[] = [
   {
     id: "sabzeh",
-    englishName: "Wheatgrass",
+    englishName: "Sprouts",
     phoneticName: "Sabzeh",
     farsiName: "سبزه",
     symbolism: "Rebirth and renewal of nature",
@@ -71,8 +71,8 @@ export const sofrehItems: SofrehItem[] = [
     symbolism: "The color of sunrise and patience",
     isCore: true,
     variants: [
-      { id: "somaq-polkadot", label: "Polka Dot", color: "#C62828", emoji: "🌅" },
-      { id: "somaq-stripes", label: "Stripes", color: "#D32F2F", emoji: "❤️‍🔥" },
+      { id: "somaq-polkadot", label: "Green", color: "#C62828", emoji: "🌅" },
+      { id: "somaq-stripes", label: "Turquoise", color: "#D32F2F", emoji: "❤️‍🔥" },
     ],
   },
   {

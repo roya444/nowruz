@@ -83,7 +83,7 @@ const positions: { top: string; left: string }[] = [
   { top: "54%", left: "64%" },    // 3: sir (garlic) — right
   { top: "52%", left: "81%" },    // 4: sib (apple) — right side
   { top: "68%", left: "71%" },    // 5: somaq — right of garlic
-  { top: "48%", left: "25%" },    // 6: serkeh (vinegar)
+  { top: "47%", left: "25%" },    // 6: serkeh (vinegar)
   // Additional 6
   { top: "24%", left: "68%" },    // 7: sonbol (hyacinth) — upper-right
   { top: "78%", left: "56%" },    // 8: sekkeh (coins)
@@ -379,22 +379,34 @@ export default function SofrehPreview({ selections, cropToSofreh = false, deskto
                   className={`relative ${item.id === "ayeneh" ? "drop-shadow-[0_2px_6px_rgba(0,0,0,0.2)]" : ""}`}
                   style={{ width: size.width, height: size.height }}
                 >
-                  {item.id === "goldfish" && (
+                  {item.id === "goldfish" ? (
+                    <>
+                      {/* Bowl behind fish */}
+                      <img
+                        src="/fishbowl-empty.svg"
+                        alt=""
+                        className="absolute inset-0 w-full h-full object-contain"
+                      />
+                      {/* Fish in the middle */}
+                      <img
+                        src={svgPath}
+                        alt={`${item.englishName} - ${variant.label}`}
+                        className="absolute top-[30%] left-[15%] w-[55%] h-[40%] object-contain"
+                      />
+                      {/* Bowl overlay on top for "in the water" effect */}
+                      <img
+                        src="/fishbowl-empty.svg"
+                        alt=""
+                        className="absolute inset-0 w-full h-full object-contain opacity-20 pointer-events-none"
+                      />
+                    </>
+                  ) : (
                     <img
-                      src="/fishbowl-empty.svg"
-                      alt=""
-                      className="absolute inset-0 w-full h-full object-contain"
+                      src={svgPath}
+                      alt={`${item.englishName} - ${variant.label}`}
+                      className="relative w-full h-full object-contain"
                     />
                   )}
-                  <img
-                    src={svgPath}
-                    alt={`${item.englishName} - ${variant.label}`}
-                    className={`relative object-contain ${
-                      item.id === "goldfish"
-                        ? "absolute top-[30%] left-[15%] w-[55%] h-[40%]"
-                        : "w-full h-full"
-                    }`}
-                  />
                 </div>
               ) : (
                 <div
