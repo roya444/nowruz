@@ -15,12 +15,19 @@ export default function DownloadButton({ targetRef }: DownloadButtonProps) {
     setLoading(true);
     try {
       const dataUrl = await exportToPng(targetRef.current);
-      const res = await fetch(dataUrl);
-      const blob = await res.blob();
 
       // On mobile, use share API so user can "Save Image" to Photos
       const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
       if (isMobile && typeof navigator.share === "function") {
+        // Convert data URL to blob directly (avoid intermediate fetch)
+        const byteString = atob(dataUrl.split(",")[1]);
+        const mimeString = dataUrl.split(",")[0].split(":")[1].split(";")[0];
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+        }
+        const blob = new Blob([ab], { type: mimeString });
         const file = new File([blob], "my-haftsin.png", { type: "image/png" });
         await navigator.share({ files: [file] });
       } else {

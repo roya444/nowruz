@@ -135,7 +135,7 @@ export async function exportToPng(element: HTMLElement): Promise<string> {
       cacheBust: true,
       pixelRatio: 2,
       backgroundColor: "#FFFBF0",
-      skipFonts: true,
+      skipFonts: false,
     };
     // First pass warms Safari's image cache; discard the result
     await toPng(element, opts).catch(() => {});
